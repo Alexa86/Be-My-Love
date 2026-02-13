@@ -1,112 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Will You Be My Valentine?</title>
+<title>Will You Be My Valentine?</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(-45deg, #ff4e50, #fc913a, #f9d423, #ff6f91);
-            background-size: 400% 400%;
-            animation: gradientBG 8s ease infinite;
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            text-align: center;
-        }
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
 
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-        }
+/* Background video */
+video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.5);
+}
 
-        h1 {
-            font-size: 50px;
-            color: white;
-            text-shadow: 0 0 20px rgba(0,0,0,0.4);
-        }
+/* Dark overlay */
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
+    z-index: -1;
+}
 
-        .btn {
-            padding: 15px 40px;
-            font-size: 22px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            position: absolute;
-            transition: 0.3s ease;
-            font-weight: bold;
-        }
+/* Center content */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    animation: fadeIn 3s ease forwards;
+}
 
-        #yes {
-            background: white;
-            color: #ff4e50;
-            left: 40%;
-            top: 60%;
-            box-shadow: 0 0 20px rgba(255,255,255,0.8);
-        }
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 60px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 25px rgba(255,255,255,0.6);
+}
 
-        #yes:hover {
-            transform: scale(1.1);
-        }
+.btn {
+    padding: 15px 40px;
+    font-size: 20px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    margin: 20px;
+    transition: 0.4s ease;
+}
 
-        #no {
-            background: black;
-            color: white;
-            left: 55%;
-            top: 60%;
-        }
+#yes {
+    background: linear-gradient(45deg,#ff4e50,#ff1c68);
+    color: white;
+    box-shadow: 0 0 25px rgba(255,0,80,0.8);
+}
 
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            animation: fall 3s linear infinite;
-        }
+#yes:hover {
+    transform: scale(1.1);
+}
 
-        @keyframes fall {
-            0% { transform: translateY(-100px) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
+#no {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    position: absolute;
+}
 
-<h1 id="text">Will You Be My Valentine? ❤️</h1>
+@keyframes fadeIn {
+    from {opacity: 0; transform: translate(-50%, -40%);}
+    to {opacity: 1; transform: translate(-50%, -50%);}
+}
 
-<button class="btn" id="yes" onclick="celebrate()">YES 💖</button>
-<button class="btn" id="no" onmouseover="moveNo()">NO 😈</button>
+.heart {
+    position: absolute;
+    font-size: 30px;
+    animation: float 5s linear infinite;
+}
 
-<script>
-    function moveNo() {
-        const btn = document.getElementById('no');
-        btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-        btn.style.top = Math.random() * (window.innerHeight - 100) + "px";
-    }
-
-    function celebrate() {
-        document.getElementById("text").innerHTML = "She Said YESSSS 😍💍✨";
-
-        for (let i = 0; i < 100; i++) {
-            let confetti = document.createElement("div");
-            confetti.classList.add("confetti");
-            confetti.style.left = Math.random() * window.innerWidth + "px";
-            confetti.style.background = `hsl(${Math.random()*360},100%,50%)`;
-            document.body.appendChild(confetti);
-
-            setTimeout(() => {
-                confetti.remove();
-            }, 3000);
-        }
-    }
-</script>
-
-</body>
-</html>
+@keyframes float {
+    from { transform: translateY(0); opacity: 1;}
+    to { transform: translateY(-800px); opacity:
