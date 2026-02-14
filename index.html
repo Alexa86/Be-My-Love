@@ -102,8 +102,8 @@ h1 {
 
 <div class="container">
     <div class="brand">ALEXANDER RAYAPPAN</div>
-    <h1>VALENTINE</h1>
-    <div class="subtitle">LIMITED EDITION • 2026 COLLECTION</div>
+    <h1>SOULMATE</h1>
+    <div class="subtitle">A LIFETIME EXCLUSIVE</div>
     <button class="btn" onclick="showProposal()">ENTER</button>
 </div>
 
@@ -111,25 +111,58 @@ h1 {
 function showProposal() {
     document.querySelector(".container").innerHTML = `
         <div class="brand">EXCLUSIVE DROP</div>
-        <h1>Will You Be My Valentine?</h1>
-        <div class="subtitle">ONLY ONE PIECE AVAILABLE</div>
+        <h1>WILL YOU BE MY SOULMATE?</h1>
+        <div class="subtitle">ONLY ONE HEART AVAILABLE</div>
         <button class="btn" onclick="yesClick()">ACCEPT</button>
         <button class="btn" id="no" onmouseover="moveNo()">DECLINE</button>
     `;
 }
 
+let declineMessages = [
+    "Are you absolutely sure?",
+    "Wrong selection perhaps?",
+    "Luxury decisions matter...",
+    "Reconsider your standards?",
+    "Only one soulmate available.",
+    "Limited lifetime edition.",
+    "Think carefully...",
+    "Final answer?"
+];
+
+let declineCount = 0;
+let yesScale = 1;
+
 function moveNo() {
-    const btn = document.getElementById('no');
-    btn.style.left = Math.random() * (window.innerWidth - 150) + "px";
-    btn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+    const noBtn = document.getElementById('no');
+    const yesBtn = document.getElementById('yes');
+
+    // Change decline text
+    if (declineCount < declineMessages.length) {
+        noBtn.innerText = declineMessages[declineCount];
+        declineCount++;
+    } else {
+        noBtn.innerText = "Last chance...";
+    }
+
+    // Move decline button randomly
+    noBtn.style.left = Math.random() * (window.innerWidth - 250) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
+
+    // Make ACCEPT bigger each time
+    yesScale += 0.1;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // Increase glow intensity
+    yesBtn.style.boxShadow = `0 0 ${20 + declineCount*10}px rgba(255,0,80,0.9)`;
 }
 
 function yesClick() {
     document.querySelector(".container").innerHTML = `
-        <h1>ACCESS GRANTED ❤️</h1>
-        <div class="subtitle">WELCOME TO FOREVER</div>
+        <h1>SOULMATE CONFIRMED ❤️</h1>
+        <div class="subtitle">FOREVER STARTS NOW</div>
     `;
 }
+
 </script>
 
 </body>
