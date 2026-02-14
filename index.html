@@ -2,100 +2,101 @@
 <html>
 <head>
 <title>Alexander — Valentine Story</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
-* {margin:0;padding:0;box-sizing:border-box;}
-html, body {height:100%;width:100%;font-family:'Montserrat', sans-serif;overflow:hidden;background:black;color:white;}
+* {margin:0; padding:0; box-sizing:border-box;}
+html, body {height:100%; width:100%; font-family:'Montserrat', sans-serif; overflow:hidden; background:black; color:white;}
 
 /* Background video */
 video#bgVideo {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    object-fit:cover;
-    z-index:-1;
-    filter:brightness(0.3);
+  position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1; filter:brightness(0.3);
 }
 
-/* Overlay */
-.overlay {position:absolute;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:-1;}
+.overlay {position:absolute; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1;}
 
 /* Centered container */
 .container {
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%, -50%);
-    text-align:center;
-    max-width:800px;
-    padding:0 20px;
-    opacity:0;
-    animation: fadeIn 2s forwards;
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  max-width:800px;
+  padding:0 20px;
+  opacity:0;
+  animation: fadeIn 2s forwards;
 }
 
 /* Brand */
-.brand {font-size:16px;letter-spacing:5px;font-weight:300;margin-bottom:10px;}
+.brand {font-size:16px; letter-spacing:5px; font-weight:300; margin-bottom:10px;}
 
 /* Main heading */
-h1 {font-family:'Playfair Display', serif;font-size:60px;letter-spacing:2px;margin-bottom:10px;}
+h1 {font-family:'Playfair Display', serif; font-size:60px; letter-spacing:2px; margin-bottom:10px;}
 
-/* Subtitle / story text */
-.subtitle {font-size:18px;opacity:0.8;margin-bottom:40px;min-height:24px;}
+/* Subtitle */
+.subtitle {font-size:18px; opacity:0.8; margin-bottom:40px; min-height:24px;}
 
 /* Buttons */
 .btn {
-    padding:12px 40px;font-size:14px;letter-spacing:2px;
-    border:none;border-radius:30px;font-weight:bold;
-    cursor:pointer;margin:10px;transition:0.4s ease;position:relative;
+  padding:8px 25px;
+  font-size:14px;
+  letter-spacing:1.5px;
+  border:none;
+  border-radius:25px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:10px;
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.4s ease;
 }
 
+/* Tiny wings using pseudo-elements */
+.btn::before, .btn::after {
+  content:"\u2728"; /* sparkle/wing emoji */
+  font-size:12px;
+  margin:0 5px;
+}
+
+/* Accept button */
 .btn-accept {
-    background-color:#ff4e50;color:white;
-    box-shadow:0 0 20px #ff4e50;
-    animation: glow 1.5s infinite alternate;
+  background-color:#ff4e50; color:white;
+  box-shadow:0 0 15px #ff4e50;
+  animation: glow 1.5s infinite alternate;
 }
-
 .btn-accept:hover {
-    transform: scale(1.1);
-    box-shadow:0 0 30px #ff4e50,0 0 40px #ff1c68;
+  transform: scale(1.2);
+  box-shadow:0 0 30px #ff4e50,0 0 50px #ff1c68;
 }
 
-@keyframes glow {
-    from {box-shadow:0 0 20px #ff4e50;}
-    to {box-shadow:0 0 35px #ff4e50,0 0 50px #ff1c68;}
-}
+/* Decline button */
+.btn-decline {background-color:#4eafff; color:white;}
+.btn-decline:hover {transform:scale(1.1);}
 
-.btn-decline {
-    background-color:#4eafff;color:white;
-}
-
-/* Fade in animation */
+/* Fade animation */
 @keyframes fadeIn {from{opacity:0;} to{opacity:1;}}
 
-/* Wing animation for decline button */
-@keyframes wingFly {
-    0% {transform:translate(0,0) rotate(0deg);}
-    25% {transform:translate(30px,-20px) rotate(-10deg);}
-    50% {transform:translate(-20px,-40px) rotate(10deg);}
-    75% {transform:translate(40px,-60px) rotate(-15deg);}
-    100% {transform:translate(-30px,-80px) rotate(15deg);}
-}
+/* Glow animation */
+@keyframes glow {from{box-shadow:0 0 15px #ff4e50;} to{box-shadow:0 0 35px #ff4e50,0 0 50px #ff1c68;}}
+
+/* Fairy flight animation (used dynamically via JS) */
 </style>
 </head>
 
 <body>
 
 <video id="bgVideo" autoplay muted loop>
-    <source src="yourvideo.mp4" type="video/mp4">
+  <source src="yourvideo.mp4" type="video/mp4">
 </video>
 <div class="overlay"></div>
 
 <div class="container">
-    <div class="brand">ALEXANDER</div>
-    <h1>Searching for My Soulmate…</h1>
-    <div class="subtitle" id="storyText"></div>
-    <button class="btn btn-accept" id="nextBtn">Next</button>
+  <div class="brand">ALEXANDER</div>
+  <h1>Searching for My Soulmate…</h1>
+  <div class="subtitle" id="storyText"></div>
+  <button class="btn btn-accept" id="nextBtn">Next</button>
 </div>
 
 <script>
@@ -104,59 +105,61 @@ const nextBtn = document.getElementById("nextBtn");
 const container = document.querySelector(".container");
 let step = 0;
 
+// Story steps
 const storySteps = [
-    "Started my journey in Mumbai…",
-    "Traveling through dreams and hopes…",
-    "Finally arrived in Chennai…",
-    "And found her ❤️ my soulmate!"
+  "Started my journey in Mumbai…",
+  "Traveling through dreams and hopes…",
+  "Finally arrived in Chennai…",
+  "And found her ❤️ my soulmate!"
 ];
 
-function showStep() {
-    if(step < storySteps.length){
-        storyText.innerHTML = storySteps[step];
-        step++;
-        if(step === storySteps.length){
-            nextBtn.style.display = "none";
-            showFinalButtons();
-        }
+// Next button click
+nextBtn.addEventListener("click", () => {
+  if(step < storySteps.length){
+    storyText.innerHTML = storySteps[step];
+    step++;
+    if(step === storySteps.length) {
+      nextBtn.style.display = "none";
+      showFinalButtons();
     }
-}
+  }
+});
 
-nextBtn.addEventListener("click", showStep);
-
-// Show Accept / Decline after last step
+// Show accept/decline with interactive flying effect
 function showFinalButtons() {
-    container.innerHTML += `
-        <div class="btn btn-accept" id="acceptBtn">ACCEPT</div>
-        <div class="btn btn-decline" id="declineBtn">DECLINE</div>
+  container.innerHTML += `
+    <div style="margin-top:20px;">
+      <div class="btn btn-accept" id="acceptBtn">ACCEPT</div>
+      <div class="btn btn-decline" id="declineBtn">DECLINE</div>
+    </div>
+  `;
+  const declineBtn = document.getElementById("declineBtn");
+  const acceptBtn = document.getElementById("acceptBtn");
+
+  const excuses = [
+    "I forgot my heart in Paris ✨",
+    "The stars aren’t aligned 🌙",
+    "Too many meetings ☕",
+    "My cat disagrees 😼",
+    "I need more coffee ☕",
+    "I’m late for my wings 🪽"
+  ];
+
+  // Fairy flight effect
+  declineBtn.addEventListener("mouseenter", () => {
+    const x = Math.random()*(window.innerWidth-100);
+    const y = Math.random()*(window.innerHeight-100);
+    declineBtn.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random()*30-15}deg)`;
+    storyText.innerHTML = excuses[Math.floor(Math.random()*excuses.length)];
+  });
+
+  acceptBtn.addEventListener("click", () => {
+    container.innerHTML = `
+      <h1>She Said YES ❤️</h1>
+      <div class="subtitle">Our journey together begins…</div>
     `;
-    const declineBtn = document.getElementById("declineBtn");
-    const acceptBtn = document.getElementById("acceptBtn");
-
-    const reasons = [
-        "I have too many meetings!",
-        "The stars aren’t aligned.",
-        "I forgot my passport.",
-        "I need more coffee ☕",
-        "My cat disagrees 😼",
-        "I left my heart in Paris 🌹"
-    ];
-
-    declineBtn.addEventListener("mouseenter", () => {
-        const x = Math.random() * (window.innerWidth - 150);
-        const y = Math.random() * (window.innerHeight - 100);
-        declineBtn.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random()*30-15}deg)`;
-        storyText.innerHTML = reasons[Math.floor(Math.random()*reasons.length)];
-    });
-
-    acceptBtn.addEventListener("click", () => {
-        container.innerHTML = `
-            <h1>She Said YES ❤️</h1>
-            <div class="subtitle">Our journey together begins…</div>
-        `;
-    });
+  });
 }
 </script>
-
 </body>
 </html>
