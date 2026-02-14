@@ -1,244 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>SOULMATE — Director Cut</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Soulmate?</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    overflow: hidden;
-    background: black;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-/* Background Video */
-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    filter: brightness(0.45) blur(8px);
-    z-index: -2;
-    transition: transform 2s ease, filter 2s ease;
+body{
+    background:black;
+    color:white;
+    overflow:hidden;
 }
 
-/* Dark Overlay */
-.overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
-    z-index: -1;
-    transition: background 1s ease;
+video{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
 }
 
-/* Fade to black ending */
-.fade-out {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: black;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 2s ease;
-    z-index: 10;
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.95));
+    z-index:-1;
 }
 
-/* Container */
-.container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    letter-spacing: 3px;
-    opacity: 0;
-    animation: fadeLuxury 3s ease forwards;
+.container{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    backdrop-filter:blur(0px);
+    transition:0.5s;
 }
 
-@keyframes fadeLuxury {
-    from { opacity: 0; transform: translate(-50%, -45%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
+h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(28px,5vw,48px);
+    opacity:0;
+    transform:translateY(40px);
+    animation:reveal 2s ease forwards;
 }
 
-.brand {
-    font-size: 14px;
-    letter-spacing: 5px;
-    margin-bottom: 10px;
+.name{
+    font-size:clamp(20px,4vw,36px);
+    margin-top:10px;
+    color:#ff3b6b;
+    opacity:0;
+    letter-spacing:5px;
+    animation:fadeInName 3s ease forwards 1.5s;
 }
 
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 55px;
+.subtitle{
+    margin-top:20px;
+    opacity:0;
+    animation:fadeIn 2s ease forwards 2.5s;
 }
 
-.subtitle {
-    font-size: 14px;
-    margin-bottom: 40px;
-    opacity: 0.8;
+.buttons{
+    margin-top:40px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    width:100%;
+    max-width:320px;
 }
 
-.button-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+button{
+    padding:14px;
+    font-size:16px;
+    border:none;
+    cursor:pointer;
+    border-radius:40px;
+    transition:0.4s;
 }
 
-.btn {
-    padding: 15px 45px;
-    font-size: 14px;
-    letter-spacing: 2px;
-    border: 1px solid white;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-    transition: 0.4s ease;
+#yes{
+    background:#ff0055;
+    color:white;
+    font-weight:bold;
+    box-shadow:0 0 20px rgba(255,0,85,0.6);
 }
 
-#yes {
-    background: linear-gradient(45deg,#ff004c,#ff5e7e);
-    border: none;
-    animation: pulseGlow 2s infinite;
+#no{
+    background:transparent;
+    border:1px solid white;
+    color:white;
+    position:relative;
 }
 
-@keyframes pulseGlow {
-    0% { box-shadow: 0 0 20px rgba(255,0,80,0.6); }
-    50% { box-shadow: 0 0 70px rgba(255,0,80,1); }
-    100% { box-shadow: 0 0 20px rgba(255,0,80,0.6); }
+.final{
+    font-size:clamp(24px,5vw,44px);
+    animation:fadeIn 1.5s ease forwards;
 }
 
-#no {
-    position: relative;
+@keyframes reveal{
+    to{opacity:1; transform:translateY(0);}
 }
 
-@media(max-width:768px){
-    h1 { font-size: 36px; }
+@keyframes fadeIn{
+    to{opacity:1;}
+}
+
+@keyframes fadeInName{
+    0%{opacity:0; letter-spacing:20px;}
+    100%{opacity:1; letter-spacing:5px;}
+}
+
+.swipeHint{
+    position:absolute;
+    bottom:20px;
+    font-size:12px;
+    opacity:0.6;
+    animation:fadeIn 3s ease forwards 4s;
 }
 </style>
 </head>
-
 <body>
 
-<video autoplay muted loop id="bgVideo">
-    <source src="yourvideo.mp4" type="video/mp4">
+<video autoplay muted loop>
+<source src="YOUR_VIDEO_LINK_HERE.mp4" type="video/mp4">
 </video>
 
-<audio id="music" autoplay loop>
-    <source src="music.mp3" type="audio/mp3">
-</audio>
-
-<audio id="heartbeat" loop>
-    <source src="heartbeat.mp3" type="audio/mp3">
-</audio>
-
 <div class="overlay"></div>
-<div class="fade-out" id="fade"></div>
 
-<div class="container">
-    <div class="brand">A LIFETIME EXCLUSIVE</div>
-    <h1>WILL YOU BE MY SOULMATE?</h1>
-    <div class="subtitle">ONLY ONE HEART AVAILABLE</div>
+<div class="container" id="container">
+    <h1>Will You Be My Soulmate?</h1>
+    <div class="name">HER NAME HERE</div>
+    <div class="subtitle">Some stories are written by destiny…</div>
 
-    <div class="button-group">
-        <button class="btn" id="yes" onclick="yesClick()">CHOOSE FOREVER</button>
-        <button class="btn" id="no" onmouseover="moveNo()">NOT TODAY</button>
+    <div class="buttons">
+        <button id="yes">YES</button>
+        <button id="no">DECLINE</button>
     </div>
+
+    <div class="swipeHint">Swipe right if you believe in fate ✨</div>
 </div>
 
 <script>
-
-let declineMessages = [
-    "Are you absolutely sure?",
-    "Luxury decisions matter...",
-    "Only one soulmate available.",
-    "This is destiny.",
-    "Compatibility: 99.8%",
-    "Reconsider carefully...",
-    "Final answer?"
+let declineMessages=[
+"Are you certain?",
+"Luxury choice matters...",
+"Think again?",
+"Only one soulmate exists.",
+"Limited lifetime offer.",
+"Reconsider?",
+"Final answer?"
 ];
 
-let declineCount = 0;
-let yesScale = 1;
+let declineCount=0;
+let yesScale=1;
 
-const overlay = document.querySelector(".overlay");
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-const video = document.getElementById("bgVideo");
-const heartbeat = document.getElementById("heartbeat");
-const fade = document.getElementById("fade");
+const yesBtn=document.getElementById("yes");
+const noBtn=document.getElementById("no");
+const container=document.getElementById("container");
 
-/* Remove blur slowly on load */
-window.onload = function() {
-    video.style.filter = "brightness(0.45) blur(0px)";
-}
-
-function moveNo() {
-
-    if (declineCount === 0) heartbeat.play();
-
-    if (declineCount < declineMessages.length) {
-        noBtn.innerText = declineMessages[declineCount];
+// Decline Logic
+noBtn.addEventListener("click",()=>{
+    if(declineCount<declineMessages.length){
+        noBtn.innerText=declineMessages[declineCount];
         declineCount++;
-    } else {
-        noBtn.innerText = "Last chance...";
     }
 
-    noBtn.style.position = "absolute";
-    noBtn.style.left = Math.random() * (window.innerWidth - 250) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
+    yesScale+=0.1;
+    yesBtn.style.transform=`scale(${yesScale})`;
+    yesBtn.style.boxShadow=`0 0 ${20+declineCount*15}px rgba(255,0,85,0.9)`;
 
-    yesScale += 0.12;
-    yesBtn.style.transform = `scale(${yesScale})`;
+    container.style.backdropFilter="blur(6px)";
+});
 
-    overlay.style.background = `rgba(0,0,0,${0.4 + declineCount * 0.06})`;
-
-    video.style.transform = `scale(${1 + declineCount * 0.03})`;
-
-    heartbeat.volume = Math.min(1, declineCount * 0.15);
-}
-
-function yesClick() {
-
-    heartbeat.pause();
-
-    document.querySelector(".container").innerHTML = `
-        <h1>SOULMATE CONFIRMED ❤️</h1>
-        <div class="subtitle">FOREVER STARTS NOW. EST-2026</div>
-    `;
-
-    for (let i = 0; i < 120; i++) {
-        let heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.style.position = "absolute";
-        heart.style.fontSize = (Math.random() * 30 + 20) + "px";
-        heart.style.left = window.innerWidth / 2 + "px";
-        heart.style.top = window.innerHeight / 2 + "px";
-        heart.style.transition = "2s ease-out";
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-            heart.style.left = Math.random() * window.innerWidth + "px";
-            heart.style.top = Math.random() * window.innerHeight + "px";
-            heart.style.opacity = "0";
-        }, 10);
-
-        setTimeout(() => {
-            heart.remove();
-        }, 2000);
-    }
-
-    setTimeout(() => {
-        fade.style.opacity = "1";
-    }, 3000);
-}
-
-</script>
-
-</body>
-</html>
+// Accept
+yesBtn.addEventListener("click",()=>{
+    container.innerHTML=`
+        <div class="final">
