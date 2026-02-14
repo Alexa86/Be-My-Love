@@ -1,89 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ALEXANDER — Valentine Collection</title>
+<title>Alexander — Valentine Story</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
-/* Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body, html {
-    height: 100%;
-    width: 100%;
-    font-family: 'Montserrat', sans-serif;
-    overflow: hidden;
-    background: black;
-    color: white;
+html, body {
+    height:100%;
+    width:100%;
+    font-family:'Montserrat', sans-serif;
+    overflow:hidden;
+    background:black;
+    color:white;
 }
 
-/* Fullscreen background video */
 video#bgVideo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    filter: brightness(0.3); /* darken for luxury feel */
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+    filter:brightness(0.3);
 }
 
-/* Centered content */
+/* Overlay for cinematic look */
+.overlay {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.3);
+    z-index:-1;
+}
+
+/* Centered container */
 .container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    max-width: 800px;
-    padding: 0 20px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    text-align:center;
+    max-width:800px;
+    padding:0 20px;
+    opacity:0;
+    animation: fadeIn 2s forwards;
 }
 
 /* Brand */
 .brand {
-    font-size: 16px;
-    letter-spacing: 5px;
-    font-weight: 300;
-    margin-bottom: 10px;
+    font-size:16px;
+    letter-spacing:5px;
+    font-weight:300;
+    margin-bottom:10px;
 }
 
 /* Main heading */
 h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 70px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
+    font-family:'Playfair Display', serif;
+    font-size:60px;
+    letter-spacing:2px;
+    margin-bottom:10px;
 }
 
-/* Subtitle */
+/* Subtitle / story text */
 .subtitle {
-    font-size: 18px;
-    opacity: 0.7;
-    margin-bottom: 40px;
+    font-size:18px;
+    opacity:0.8;
+    margin-bottom:40px;
+    min-height:24px;
 }
 
-/* Buttons */
+/* Buttons with custom color */
 .btn {
-    padding: 12px 40px;
-    font-size: 14px;
-    letter-spacing: 2px;
-    border: 1px solid white;
-    background: transparent;
-    cursor: pointer;
-    margin: 10px;
-    transition: 0.3s ease;
+    padding:12px 40px;
+    font-size:14px;
+    letter-spacing:2px;
+    border:none;
+    cursor:pointer;
+    margin:10px;
+    transition:0.4s ease;
+    border-radius:30px;
+    font-weight:bold;
 }
 
-.btn:hover {
-    background: white;
-    color: black;
+.btn-primary {
+    background-color:#ff4e50;
+    color:white;
+}
+
+.btn-primary:hover {
+    background-color:white;
+    color:#ff4e50;
+}
+
+.btn-secondary {
+    background-color:#4eafff;
+    color:white;
+}
+
+.btn-secondary:hover {
+    background-color:white;
+    color:#4eafff;
+}
+
+@keyframes fadeIn {
+    from{opacity:0;}
+    to{opacity:1;}
 }
 </style>
 </head>
@@ -93,37 +123,46 @@ h1 {
 <video id="bgVideo" autoplay muted loop>
     <source src="yourvideo.mp4" type="video/mp4">
 </video>
+<div class="overlay"></div>
 
 <div class="container">
     <div class="brand">ALEXANDER</div>
-    <h1>VALENTINE</h1>
-    <div class="subtitle">2026 LIMITED COLLECTION</div>
-    <button class="btn" onclick="showProposal()">ENTER</button>
+    <h1>Searching for My Soulmate…</h1>
+    <div class="subtitle" id="storyText"></div>
+    <button class="btn btn-primary" id="nextBtn">Next</button>
 </div>
 
 <script>
-function showProposal() {
-    const container = document.querySelector('.container');
-    container.innerHTML = `
-        <div class="brand">EXCLUSIVE DROP</div>
-        <h1>Will You Be My Valentine?</h1>
-        <div class="subtitle">Only one piece available</div>
-        <button class="btn" onclick="yesClick()">ACCEPT</button>
-        <button class="btn" onclick="declineClick()">DECLINE</button>
-    `;
+const storyText = document.getElementById("storyText");
+const nextBtn = document.getElementById("nextBtn");
+let step = 0;
+
+const storySteps = [
+    "Started my journey in Mumbai…",
+    "Traveling through dreams and hopes…",
+    "Finally arrived in Chennai…",
+    "And found her ❤️ my soulmate!",
+    "Forever begins now ✨"
+];
+
+function showStep() {
+    if(step < storySteps.length) {
+        storyText.innerHTML = storySteps[step];
+        step++;
+        if(step === storySteps.length){
+            nextBtn.innerText = "Celebrate ❤️";
+            nextBtn.classList.remove("btn-primary");
+            nextBtn.classList.add("btn-secondary");
+        }
+    } else {
+        document.querySelector(".container").innerHTML = `
+            <h1>She Said YES ❤️</h1>
+            <div class="subtitle">Our journey together begins…</div>
+        `;
+    }
 }
 
-function yesClick() {
-    const container = document.querySelector('.container');
-    container.innerHTML = `
-        <h1>ACCESS GRANTED ❤️</h1>
-        <div class="subtitle">Welcome to forever</div>
-    `;
-}
-
-function declineClick() {
-    alert("You can’t resist this drop 😏");
-}
+nextBtn.addEventListener("click", showStep);
 </script>
 
 </body>
