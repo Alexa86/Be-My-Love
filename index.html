@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Darling ❤️</title>
 
@@ -12,11 +11,10 @@ body {
     overflow: hidden;
     font-family: Arial, sans-serif;
     text-align: center;
-    background: black;
     color: white;
 }
 
-/* Background Video */
+/* 🎥 Fullscreen Video */
 video {
     position: fixed;
     width: 100%;
@@ -25,58 +23,28 @@ video {
     z-index: -2;
 }
 
+/* 🌑 Dark Overlay */
 .overlay {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: -1;
 }
 
-/* Main Box */
-.container {
-    position: relative;
-    top: 35%;
-    transform: translateY(-50%);
-}
-
+/* ✨ Glowing Text */
 h1 {
-    font-size: 32px;
+    position: relative;
+    top: 40%;
+    font-size: 36px;
     color: pink;
-    text-shadow: 2px 2px 15px red;
+    text-shadow: 
+        0 0 10px pink,
+        0 0 20px red,
+        0 0 30px hotpink;
 }
 
-/* Buttons */
-.btn {
-    padding: 12px 25px;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    margin: 10px;
-    transition: 0.3s;
-}
-
-/* YES button (Accent Glow) */
-#yesBtn {
-    background: hotpink;
-    color: white;
-    box-shadow: 0 0 15px hotpink;
-}
-
-#yesBtn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px red;
-}
-
-/* NO button */
-#noBtn {
-    background: white;
-    color: black;
-    position: absolute;
-}
-
-/* Floating hearts */
+/* 💖 Floating Hearts */
 .heart {
     position: absolute;
     color: pink;
@@ -93,68 +61,17 @@ h1 {
 
 <body>
 
+<!-- 🎥 Background Video -->
 <video autoplay muted loop playsinline>
     <source src="yourvideo.mp4" type="video/mp4">
 </video>
 
 <div class="overlay"></div>
 
-<div class="container">
-    <h1>Will you be my soulmate, Darling? ❤️</h1>
-    <button class="btn" id="yesBtn" onclick="sayYes()">YES 💍</button>
-    <button class="btn" id="noBtn">NO 🙈</button>
-</div>
-
-<!-- Audio -->
-<audio id="bgMusic" loop>
-    <source src="bg.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="heartbeat" loop>
-    <source src="heartbeat.mp3" type="audio/mpeg">
-</audio>
+<h1>Will you be my soulmate, Darling? ❤️</h1>
 
 <script>
-const bgMusic = document.getElementById("bgMusic");
-const heartbeat = document.getElementById("heartbeat");
-const noBtn = document.getElementById("noBtn");
-
-/* Start audio after first tap */
-function startAudio() {
-    bgMusic.volume = 0.6;
-    heartbeat.volume = 0.4;
-    bgMusic.play().catch(() => {});
-    heartbeat.play().catch(() => {});
-}
-
-document.addEventListener("click", startAudio, { once: true });
-document.addEventListener("touchstart", startAudio, { once: true });
-
-/* YES click */
-function sayYes() {
-    document.body.innerHTML = `
-        <video autoplay muted loop playsinline style="position:fixed;width:100%;height:100%;object-fit:cover;z-index:-2;">
-            <source src="yourvideo.mp4" type="video/mp4">
-        </video>
-        <div style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:-1;"></div>
-        <h1 style="position:relative;top:40%;color:pink;font-size:40px;text-shadow:2px 2px 20px red;">
-            I Love You Darling ❤️ Forever & Always 💍
-        </h1>
-    `;
-}
-
-/* NO button runs away */
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
-
-function moveButton() {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
-
-/* Floating hearts */
+/* 💖 Generate floating hearts */
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
