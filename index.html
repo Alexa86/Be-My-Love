@@ -1,166 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Alexander — Valentine Story</title>
+<meta charset="UTF-8">
+<title>Valentine Story</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
-
 <style>
-* {margin:0;padding:0;box-sizing:border-box;}
-html, body {height:100%;width:100%;font-family:'Montserrat', sans-serif;overflow:hidden;background:black;color:white;}
+* {margin:0; padding:0; box-sizing:border-box;}
+html, body {height:100%; width:100%; font-family:'Montserrat', sans-serif; overflow:hidden; background:black; color:white;}
+body {display:flex; justify-content:center; align-items:center;}
+
+/* Slides container */
+.slides {position:relative; width:100%; height:100%; overflow:hidden;}
+
+/* Each slide */
+.slide {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; padding:20px; opacity:0; transition:opacity 1s ease;
+}
+
+/* Active slide */
+.slide.active {opacity:1; z-index:2;}
 
 /* Background video */
 video#bgVideo {
   position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-2; filter:brightness(0.3);
 }
+
+/* Overlay */
 .overlay {position:absolute; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1;}
 
-/* Centered container */
-.container {
-  position:absolute; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center; max-width:800px; padding:0 20px;
-  opacity:0; animation: fadeIn 2s forwards;
-  z-index:2;
-}
-
-/* Brand */
-.brand {font-size:16px; letter-spacing:5px; font-weight:300; margin-bottom:10px;}
-
-/* Main heading */
-h1 {font-family:'Playfair Display', serif; font-size:60px; letter-spacing:2px; margin-bottom:10px;}
-
-/* Subtitle */
-.subtitle {font-size:18px; opacity:0.8; margin-bottom:40px; min-height:24px;}
+/* Heading and subtitle */
+h1 {font-family:'Playfair Display', serif; font-size:50px; letter-spacing:1px; margin-bottom:10px;}
+.subtitle {font-size:18px; opacity:0.9; min-height:30px; margin-bottom:30px; max-width:700px;}
 
 /* Buttons */
 .btn {
   padding:8px 25px; font-size:14px; letter-spacing:1.5px; border:none; border-radius:25px;
-  font-weight:bold; cursor:pointer; margin:10px; position:relative; display:inline-flex; align-items:center;
-  justify-content:center; transition:0.4s ease;
+  font-weight:bold; cursor:pointer; margin:10px; display:inline-flex; align-items:center; justify-content:center;
+  position:relative; transition:0.4s ease;
 }
-
-/* Accept button with glow */
-.btn-accept {
-  background-color:#ff4e50; color:white; box-shadow:0 0 15px #ff4e50; animation: glow 1.5s infinite alternate;
-}
+.btn-accept {background-color:#ff4e50; color:white; box-shadow:0 0 15px #ff4e50; animation: glow 1.5s infinite alternate;}
 .btn-accept:hover {transform:scale(1.2); box-shadow:0 0 30px #ff4e50,0 0 50px #ff1c68;}
-
-/* Decline button */
 .btn-decline {background-color:#4eafff; color:white;}
 
-/* Tiny wing icons as actual images */
-.wing {
-  width:15px; height:15px; display:inline-block; margin:0 5px; background:url('https://i.postimg.cc/7Zk3w2PJ/wing.png') no-repeat center/contain;
-  animation: flap 1s infinite alternate;
-}
-
+/* Wings on buttons */
+.wing {width:15px; height:15px; display:inline-block; margin:0 5px; background:url('https://i.postimg.cc/7Zk3w2PJ/wing.png') no-repeat center/contain; animation: flap 1s infinite alternate;}
 @keyframes flap {0%{transform:rotate(0deg);}100%{transform:rotate(20deg);}}
 
-/* Fade & glow animations */
-@keyframes fadeIn {from{opacity:0;} to{opacity:1;}}
+/* Glow animation */
 @keyframes glow {from{box-shadow:0 0 15px #ff4e50;} to{box-shadow:0 0 35px #ff4e50,0 0 50px #ff1c68;}}
 
-/* Map animation */
-.map {
-  position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;
-}
+/* Map SVG */
+.map {position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;}
 .map svg {width:100%; height:100%;}
-.path {
-  stroke:#ff4e50; stroke-width:3; fill:none; stroke-dasharray:1000; stroke-dashoffset:1000;
-  animation:pathDraw 4s forwards;
-}
+.path {stroke:#ff4e50; stroke-width:3; fill:none; stroke-dasharray:1000; stroke-dashoffset:1000; animation:pathDraw 4s forwards;}
 @keyframes pathDraw {to {stroke-dashoffset:0;}}
 </style>
 </head>
 
 <body>
-
 <video id="bgVideo" autoplay muted loop>
   <source src="yourvideo.mp4" type="video/mp4">
 </video>
 <div class="overlay"></div>
 
-<!-- Map animation -->
-<div class="map">
-  <svg viewBox="0 0 800 600">
-    <!-- Tiny curve from Mumbai to Chennai -->
-    <path class="path" d="M100,500 C300,400 500,300 700,100"/>
-  </svg>
-</div>
+<div class="slides">
+  <!-- Slide 1 - Mumbai -->
+  <div class="slide active">
+    <h1>Started my journey in Mumbai…</h1>
+    <div class="subtitle">Looking for my soulmate, dreaming of love ❤️</div>
+    <img src="https://i.postimg.cc/2yXkq7wM/mumbai-cartoon.png" alt="Mumbai cartoon" style="max-height:300px;">
+    <button class="btn btn-accept" onclick="nextSlide()">Next</button>
+  </div>
 
-<div class="container">
-  <div class="brand">ALEXANDER</div>
-  <h1>Searching for My Soulmate…</h1>
-  <div class="subtitle" id="storyText"></div>
-  <button class="btn btn-accept" id="nextBtn">Next</button>
+  <!-- Slide 2 - Traveling World -->
+  <div class="slide">
+    <h1>Traveling around the world…</h1>
+    <div class="subtitle">Exploring landmarks, hoping to meet her 🍰✈️</div>
+    <img src="https://i.postimg.cc/Qx9L8rR5/travel-cartoon.png" alt="Travel cartoon" style="max-height:300px;">
+    <button class="btn btn-accept" onclick="nextSlide()">Next</button>
+  </div>
+
+  <!-- Slide 3 - Chennai Arrival -->
+  <div class="slide">
+    <h1>Finally arrived in Chennai…</h1>
+    <div class="subtitle">The journey is almost complete</div>
+    <div class="map">
+      <svg viewBox="0 0 800 600">
+        <path class="path" d="M100,500 C300,400 500,300 700,100"/>
+      </svg>
+    </div>
+    <img src="https://i.postimg.cc/T3G59Kvq/chennai-cartoon.png" alt="Chennai cartoon" style="max-height:300px;">
+    <button class="btn btn-accept" onclick="nextSlide()">Next</button>
+  </div>
+
+  <!-- Slide 4 - Found Her -->
+  <div class="slide">
+    <h1>And found her ❤️ my soulmate!</h1>
+    <div class="subtitle">She loves baking and traveling 🍰✈️</div>
+    <img src="https://i.postimg.cc/2jP0w6gk/baking-cartoon.png" alt="Baking cartoon" style="max-height:300px;">
+    <div>
+      <div class="btn btn-accept" id="acceptBtn"><span class="wing"></span>ACCEPT<span class="wing"></span></div>
+      <div class="btn btn-decline" id="declineBtn"><span class="wing"></span>DECLINE<span class="wing"></span></div>
+    </div>
+  </div>
+
+  <!-- Slide 5 - Celebration -->
+  <div class="slide">
+    <h1>She Said YES ❤️</h1>
+    <div class="subtitle">Our journey together begins…</div>
+    <img src="https://i.postimg.cc/Kv4Xx6Nx/couple-cartoon.png" alt="Couple cartoon" style="max-height:300px;">
+  </div>
 </div>
 
 <script>
-const storyText = document.getElementById("storyText");
-const nextBtn = document.getElementById("nextBtn");
-const container = document.querySelector(".container");
-let step = 0;
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
 
-// Story steps
-const storySteps = [
-  "Started my journey in Mumbai…",
-  "Traveling through dreams and hopes…",
-  "Finally arrived in Chennai…",
-  "And found her ❤️ my soulmate!"
+// Function to go to next slide
+function nextSlide(){
+  slides[currentSlide].classList.remove("active");
+  currentSlide++;
+  slides[currentSlide].classList.add("active");
+}
+
+// Decline button fairy effect
+const declineBtn = document.getElementById("declineBtn");
+const acceptBtn = document.getElementById("acceptBtn");
+const storyText = document.querySelector(".slide.active .subtitle");
+const excuses = [
+  "I forgot my heart in Paris ✨",
+  "The stars aren’t aligned 🌙",
+  "Too many meetings ☕",
+  "My cat disagrees 😼",
+  "I need more coffee ☕",
+  "I’m late for my wings 🪽"
 ];
 
-// Next button click
-nextBtn.addEventListener("click", () => {
-  if(step < storySteps.length){
-    storyText.innerHTML = storySteps[step];
-    step++;
-    if(step === storySteps.length){
-      nextBtn.style.display = "none";
-      showFinalButtons();
-    }
-  }
-});
-
-// Show accept/decline buttons with wings and interactive decline
-function showFinalButtons() {
-  container.innerHTML += `
-    <div style="margin-top:20px;">
-      <div class="btn btn-accept" id="acceptBtn">
-        <span class="wing"></span>ACCEPT<span class="wing"></span>
-      </div>
-      <div class="btn btn-decline" id="declineBtn">
-        <span class="wing"></span>DECLINE<span class="wing"></span>
-      </div>
-    </div>
-  `;
-  const declineBtn = document.getElementById("declineBtn");
-  const acceptBtn = document.getElementById("acceptBtn");
-
-  const excuses = [
-    "I forgot my heart in Paris ✨",
-    "The stars aren’t aligned 🌙",
-    "Too many meetings ☕",
-    "My cat disagrees 😼",
-    "I need more coffee ☕",
-    "I’m late for my wings 🪽"
-  ];
-
-  // Fairy flight effect
+if(declineBtn){
   declineBtn.addEventListener("mouseenter", () => {
-    const x = Math.random()*(window.innerWidth-100);
-    const y = Math.random()*(window.innerHeight-100);
+    const x = Math.random()*(window.innerWidth-150);
+    const y = Math.random()*(window.innerHeight-150);
     declineBtn.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random()*30-15}deg)`;
     storyText.innerHTML = excuses[Math.floor(Math.random()*excuses.length)];
   });
+}
 
-  // Accept button click
+if(acceptBtn){
   acceptBtn.addEventListener("click", () => {
-    container.innerHTML = `
-      <h1>She Said YES ❤️</h1>
-      <div class="subtitle">Our journey together begins…</div>
-    `;
+    nextSlide();
   });
 }
 </script>
+
 </body>
 </html>
