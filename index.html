@@ -1,142 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Valentine Collection</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
-
-<style>
-body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    overflow: hidden;
-}
-
-/* Background Video */
-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    filter: brightness(0.4);
-    z-index: -2;
-}
-
-/* Overlay */
-.overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.3);
-    z-index: -1;
-}
-
-/* Main Content */
-.container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    letter-spacing: 3px;
-    opacity: 0;
-    animation: fadeLuxury 2.5s ease forwards;
-}
-
-.brand {
-    font-size: 18px;
-    font-weight: 300;
-    margin-bottom: 10px;
-}
-
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 70px;
-    margin: 10px 0;
-}
-
-.subtitle {
-    font-size: 16px;
-    margin-bottom: 40px;
-    opacity: 0.8;
-}
-
-.btn {
-    padding: 15px 50px;
-    font-size: 14px;
-    letter-spacing: 2px;
-    border: 1px solid white;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-    transition: 0.4s ease;
-}
-
-.btn:hover {
-    background: white;
-    color: black;
-}
-
-#no {
-    position: absolute;
-}
-
-@keyframes fadeLuxury {
-    from { opacity: 0; transform: translate(-50%, -40%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
-}
-
-</style>
-</head>
-
-<body>
-
-<video autoplay muted loop>
-    <source src="yourvideo.mp4" type="video/mp4">
-</video>
-
-<div class="overlay"></div>
-
-<div class="container">
-    <div class="brand">ALEXANDER RAYAPPAN</div>
-    <h1>SOULMATE</h1>
-    <div class="subtitle">A LIFETIME EXCLUSIVE</div>
-    <button class="btn" onclick="showProposal()">ENTER</button>
-</div>
-
-<script>
-function showProposal() {
-    document.querySelector(".container").innerHTML = `
-        <div class="brand">EXCLUSIVE DROP</div>
-        <h1>WILL YOU BE MY SOULMATE?</h1>
-        <div class="subtitle">ONLY ONE HEART AVAILABLE</div>
-        <button class="btn" onclick="yesClick()">ACCEPT</button>
-        <button class="btn" id="no" onmouseover="moveNo()">DECLINE</button>
-    `;
-}
-
 let declineMessages = [
     "Are you absolutely sure?",
-    "Wrong selection perhaps?",
     "Luxury decisions matter...",
-    "Reconsider your standards?",
     "Only one soulmate available.",
-    "Limited lifetime edition.",
-    "Think carefully...",
-    "Final answer?"
+    "This is a lifetime exclusive.",
+    "Reconsider carefully...",
+    "Compatibility: 99.8%",
+    "Final answer?",
+    "Destiny is watching..."
 ];
 
 let declineCount = 0;
 let yesScale = 1;
 
-function moveNo() {
-    const noBtn = document.getElementById('no');
-    const yesBtn = document.getElementById('yes');
+const overlay = document.querySelector(".overlay");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
 
-    // Change decline text
+/* Floating particles */
+function createParticles() {
+    for (let i = 0; i < 30; i++) {
+        let particle = document.createElement("div");
+        particle.style.position = "absolute";
+        particle.style.width = "4px";
+        particle.style.height = "4px";
+        particle.style.background = "white";
+        particle.style.borderRadius = "50%";
+        particle.style.left = Math.random() * window.innerWidth + "px";
+        particle.style.top = Math.random() * window.innerHeight + "px";
+        particle.style.opacity = Math.random();
+        particle.style.animation = "floatParticle 10s linear infinite";
+        document.body.appendChild(particle);
+    }
+}
+
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes floatParticle {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-1000px); }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 20px rgba(255,0,80,0.6); }
+    50% { box-shadow: 0 0 60px rgba(255,0,80,1); }
+    100% { box-shadow: 0 0 20px rgba(255,0,80,0.6); }
+}
+`;
+document.head.appendChild(style);
+
+yesBtn.style.animation = "pulseGlow 2s infinite";
+
+createParticles();
+
+function moveNo() {
+
+    // Change text
     if (declineCount < declineMessages.length) {
         noBtn.innerText = declineMessages[declineCount];
         declineCount++;
@@ -144,26 +62,48 @@ function moveNo() {
         noBtn.innerText = "Last chance...";
     }
 
-    // Move decline button randomly
+    // Move randomly
     noBtn.style.left = Math.random() * (window.innerWidth - 250) + "px";
     noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
 
-    // Make ACCEPT bigger each time
-    yesScale += 0.1;
+    // Grow ACCEPT
+    yesScale += 0.12;
     yesBtn.style.transform = `scale(${yesScale})`;
 
-    // Increase glow intensity
-    yesBtn.style.boxShadow = `0 0 ${20 + declineCount*10}px rgba(255,0,80,0.9)`;
+    // Darken background slightly
+    overlay.style.background = `rgba(0,0,0,${0.3 + declineCount * 0.05})`;
+
+    // Slight zoom cinematic effect
+    document.querySelector("video").style.transform =
+        `scale(${1 + declineCount * 0.02})`;
 }
 
 function yesClick() {
+
     document.querySelector(".container").innerHTML = `
         <h1>SOULMATE CONFIRMED ❤️</h1>
-        <div class="subtitle">FOREVER STARTS NOW EST.2026</div>
+        <div class="subtitle">FOREVER STARTS NOW</div>
     `;
+
+    // Heart explosion
+    for (let i = 0; i < 80; i++) {
+        let heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.style.position = "absolute";
+        heart.style.fontSize = (Math.random() * 30 + 20) + "px";
+        heart.style.left = window.innerWidth / 2 + "px";
+        heart.style.top = window.innerHeight / 2 + "px";
+        heart.style.transition = "2s ease-out";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.top = Math.random() * window.innerHeight + "px";
+            heart.style.opacity = "0";
+        }, 10);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 2000);
+    }
 }
-
-</script>
-
-</body>
-</html>
