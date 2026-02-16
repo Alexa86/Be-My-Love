@@ -3,299 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Journey ✨</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>Will You Be My Soulmate?</title>
 
 <style>
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-body,html{
-height:100%;
-overflow:hidden;
-background:#000;
-color:#fff;
+body{
+    overflow:hidden;
+    background:black;
+    color:white;
+    text-align:center;
 }
 
 /* Background Video */
 video{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-2;
-filter:brightness(0.35) contrast(1.1);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+    filter:brightness(40%);
 }
 
-/* Overlay */
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
-z-index:-1;
+/* Main Container */
+.container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:100%;
+    padding:20px;
 }
 
-/* Slides */
-.slide{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-opacity:0;
-transition:opacity 1.5s ease;
-}
-
-.slide.active{
-opacity:1;
-}
-
+/* Heading */
 h1{
-font-size:3rem;
-font-weight:700;
-letter-spacing:2px;
+    font-size:42px;
+    margin-bottom:40px;
+    animation: glow 2s infinite alternate;
 }
 
-.subtitle{
-margin-top:20px;
-font-size:1.2rem;
-font-weight:300;
-opacity:0.85;
-max-width:750px;
-min-height:30px;
+@keyframes glow{
+    from{ text-shadow:0 0 10px white; }
+    to{ text-shadow:0 0 25px cyan; }
 }
 
 /* Buttons */
 .buttons{
-margin-top:40px;
-position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:30px;
+    margin-top:20px;
+    position:relative;
 }
 
 button{
-padding:15px 40px;
-font-size:1rem;
-border-radius:40px;
-border:none;
-cursor:pointer;
-margin:10px;
-transition:0.3s ease;
+    padding:15px 40px;
+    font-size:20px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-#acceptBtn{
-background:rgba(255,215,0,0.9);
-color:#000;
-box-shadow:0 0 20px rgba(255,215,0,0.6);
+#yes{
+    background:#00ff99;
+    color:black;
 }
 
-#acceptBtn:hover{
-transform:scale(1.1);
+#yes:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 20px #00ff99;
 }
 
-#declineBtn{
-background:rgba(255,255,255,0.15);
-color:#fff;
-border:1px solid rgba(255,255,255,0.4);
-position:absolute;
+#no{
+    background:#ff4d4d;
+    color:white;
+    position:absolute;
 }
 
-/* Established animation */
-.established{
-margin-top:30px;
-font-size:1.5rem;
-letter-spacing:4px;
-color:gold;
-opacity:0;
-transform:translateY(20px);
-transition:all 2s ease;
+/* Hidden After Yes */
+.hidden{
+    display:none;
 }
 
-.established.show{
-opacity:1;
-transform:translateY(0);
+/* Celebration Screen */
+.celebrate{
+    font-size:35px;
+    animation:pop 1s ease forwards;
 }
 
-@media(max-width:768px){
-h1{font-size:2rem;}
-.subtitle{font-size:1rem;}
+@keyframes pop{
+    0%{transform:scale(0);}
+    100%{transform:scale(1);}
+}
+
+/* Typewriter */
+.typewriter{
+    font-size:22px;
+    margin-top:20px;
+    height:60px;
+}
+
+/* Mini Game */
+.game{
+    margin-top:20px;
+    font-size:18px;
+}
+
+input{
+    padding:10px;
+    border-radius:20px;
+    border:none;
+    text-align:center;
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
 }
 </style>
 </head>
 
 <body>
 
+<!-- Background Video -->
 <video autoplay muted loop>
-<source src="yourvideo.mp4" type="video/mp4">
+    <source src="yourvideo.mp4" type="video/mp4">
 </video>
 
-<div class="overlay"></div>
-
-<audio id="bgMusic" loop>
-<source src="bg.mp3" type="audio/mpeg">
+<!-- Music -->
+<audio id="bgmusic" autoplay loop>
+    <source src="bg.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Slides -->
+<audio id="heartbeat" loop>
+    <source src="heartbeat.mp3" type="audio/mpeg">
+</audio>
 
-<div class="slide active">
-<h1 id="type1"></h1>
-<p class="subtitle">A journey that started with ambition…</p>
-</div>
+<div class="container" id="main">
+    <h1>Will You Be My Soulmate?</h1>
 
-<div class="slide">
-<h1>Across cities and countries ✈️</h1>
-<p class="subtitle">Exploring the world, chasing dreams.</p>
-</div>
-
-<div class="slide">
-<h1>Between flights and flavors… 🍰</h1>
-<p class="subtitle">I found someone who makes life sweeter.</p>
+    <div class="buttons">
+        <button id="yes">YES 💍</button>
+        <button id="no">NO 🙈</button>
+    </div>
 </div>
 
-<div class="slide">
-<h1>Will You Be My Soulmate?</h1>
-<div class="buttons">
-<button id="acceptBtn">Yes 💍</button>
-<button id="declineBtn">No</button>
-</div>
-<p class="subtitle" id="excuseText"></p>
+<div class="container hidden" id="celebration">
+    <div class="celebrate">
+        ❤️ Established in 2026 ❤️
+    </div>
+    <div class="typewriter" id="typeText"></div>
 </div>
 
-<div class="slide">
-<h1>Then let’s write our story together ✨</h1>
-<p class="subtitle">Baking memories. Traveling forever. 🌍</p>
-<div class="established" id="establishedText">
-ESTABLISHED IN 2026
-</div>
-</div>
+<canvas id="confetti"></canvas>
 
 <script>
-document.addEventListener("DOMContentLoaded",function(){
 
-const slides=document.querySelectorAll(".slide");
-let current=0;
+/* No Button Escape */
+const noBtn = document.getElementById("no");
 
-/* Slide Controls */
-function showSlide(index){
-slides[current].classList.remove("active");
-current=index;
-slides[current].classList.add("active");
-}
-
-function nextSlide(){
-if(current < slides.length-2){
-slides[current].classList.remove("active");
-current++;
-slides[current].classList.add("active");
-}
-}
-
-/* Typing effect */
-function typeEffect(element,text,speed=60,callback){
-let i=0;
-function type(){
-if(i<text.length){
-element.innerHTML+=text[i];
-i++;
-setTimeout(type,speed);
-}else if(callback){callback();}
-}
-type();
-}
-
-typeEffect(
-document.getElementById("type1"),
-"Started my journey in Mumbai…",
-70,
-()=>setTimeout(nextSlide,2000)
-);
-
-/* Auto progression until proposal */
-let autoFlow=setInterval(()=>{
-if(current < slides.length-2){
-nextSlide();
-}
-},6000);
-
-/* Accept Button */
-document.getElementById("acceptBtn").addEventListener("click",()=>{
-clearInterval(autoFlow);
-showSlide(slides.length-1);
-
-setTimeout(()=>{
-document.getElementById("establishedText").classList.add("show");
-},2000);
+noBtn.addEventListener("mouseover", function(){
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 });
 
-/* Premium Decline Button */
-const decline=document.getElementById("declineBtn");
-const excuseText=document.getElementById("excuseText");
+/* Yes Click */
+document.getElementById("yes").onclick = function(){
 
-const sarcasticReasons=[
-"Are you sure? That sounded illegal 😌",
-"You misclicked. I’ll ignore that.",
-"Nice try… destiny disagrees.",
-"Error 404: No not found.",
-"Paris already approved us ✈️",
-"Baking together sounds better 🍰",
-"The universe said YES already.",
-"System override activated.",
-"Recalculating feelings…",
-"This button refuses negativity."
-];
+    document.getElementById("main").classList.add("hidden");
+    document.getElementById("celebration").classList.remove("hidden");
 
-function moveDecline(){
-decline.style.transition="opacity 0.4s ease, transform 0.4s ease";
-decline.style.opacity="0";
-decline.style.transform="scale(0.8)";
+    document.getElementById("heartbeat").play();
 
-setTimeout(()=>{
-const maxX=window.innerWidth-160;
-const maxY=window.innerHeight-80;
+    startConfetti();
+    startFireworks();
+    typeWriter();
+};
 
-decline.style.position="absolute";
-decline.style.left=Math.random()*maxX+"px";
-decline.style.top=Math.random()*maxY+"px";
+/* Typewriter */
+function typeWriter(){
+    const text = "From today, forever begins... ❤️";
+    let i = 0;
+    const speed = 60;
 
-excuseText.innerText=
-sarcasticReasons[Math.floor(Math.random()*sarcasticReasons.length)];
-
-decline.style.opacity="1";
-decline.style.transform="scale(1)";
-},400);
+    function typing(){
+        if(i < text.length){
+            document.getElementById("typeText").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
 }
 
-decline.addEventListener("mouseenter",moveDecline);
-decline.addEventListener("click",(e)=>{
-e.preventDefault();
-moveDecline();
-});
+/* Confetti */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-/* Background music fade-in */
-const music=document.getElementById("bgMusic");
-document.body.addEventListener("click",()=>{
-music.volume=0;
-music.play();
-let fade=setInterval(()=>{
-if(music.volume<0.5){
-music.volume+=0.02;
-}else clearInterval(fade);
-},200);
-},{once:true});
+let confetti = [];
 
-});
+function startConfetti(){
+    for(let i=0;i<150;i++){
+        confetti.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height,
+            r:Math.random()*6+2,
+            d:Math.random()*150
+        });
+    }
+    draw();
+}
+
+function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    for(let i=0;i<confetti.length;i++){
+        let c=confetti[i];
+        ctx.beginPath();
+        ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+        ctx.fill();
+        c.y += 2;
+        if(c.y>canvas.height) c.y=0;
+    }
+    requestAnimationFrame(draw);
+}
+
+/* Fireworks */
+function startFireworks(){
+    for(let i=0;i<20;i++){
+        setTimeout(()=>{
+            let div=document.createElement("div");
+            div.style.position="fixed";
+            div.style.width="10px";
+            div.style.height="10px";
+            div.style.background="cyan";
+            div.style.borderRadius="50%";
+            div.style.left=Math.random()*window.innerWidth+"px";
+            div.style.top=Math.random()*window.innerHeight+"px";
+            div.style.boxShadow="0 0 30px cyan";
+            document.body.appendChild(div);
+            setTimeout(()=>div.remove(),1000);
+        }, i*200);
+    }
+}
+
 </script>
 
 </body>
