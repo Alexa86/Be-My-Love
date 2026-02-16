@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Soulmate? • A Journey from Mumbai to Chennai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Italiana&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #f8f6f1;
+            --charcoal: #1a1a1a;
+            --gold: #c9a961;
+            --burgundy: #6b2737;
+            --sage: #8b9a7e;
+            --terracotta: #c4745e;
+            --crimson: #8b2635;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--charcoal);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Cinematic grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,.05) 2px,
+                    rgba(0,0,0,.05) 4px
+                );
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.3;
+        }
+
+        /* Page transitions */
+        .page {
+            display: none;
+            opacity: 0;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeInPage 1s ease-out forwards;
+        }
+
+        @keyframes fadeInPage {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            transition: all 1s ease;
+        }
+
+        .background.page1 {
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(107, 39, 55, 0.15), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(201, 169, 97, 0.1), transparent 50%),
+                linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+        }
+
+        .background.page2 {
+            background: 
+                radial-gradient(circle at 70% 30%, rgba(139, 154, 126, 0.15), transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(201, 169, 97, 0.1), transparent 50%),
+                linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
+        }
+
+        .background.page3 {
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(196, 116, 94, 0.15), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(201, 169, 97, 0.1), transparent 50%),
+                linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+        }
+
+        .background.page4 {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(139, 38, 53, 0.2), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(201, 169, 97, 0.1), transparent 40%),
+                linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
+        }
+
+        .background.page5 {
+            background: 
+                radial-gradient(circle at 50% 30%, rgba(107, 39, 55, 0.2), transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(201, 169, 97, 0.15), transparent 50%),
+                linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+        }
+
+        /* Journey line for page 2 */
+        .journey-line {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--sage), transparent);
+            transform: translateY(-50%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .journey-line.active {
+            opacity: 0.2;
+        }
+
+        .journey-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20%;
+            height: 1px;
+            background: var(--gold);
+            animation: travelLine 8s ease-in-out infinite;
+        }
+
+        @keyframes travelLine {
+            0%, 100% { left: 0; opacity: 0; }
+            50% { left: 80%; opacity: 1; }
+        }
+
+        /* Pulse overlay for page 4 */
+        .pulse-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139, 38, 53, 0.1), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .pulse-overlay.active {
+            opacity: 1;
+            animation: heartPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        /* Stars for page 5 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .stars.active {
+            opacity: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: var(--cream);
+            opacity: 0;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Music control */
+        .music-control {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            z-index: 1000;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .music-control:hover {
+            color: var(--cream);
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+        }
+
+        .content {
+            max-width: 900px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeInUp 1.8s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chapter {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .location, .title {
+            font-family: 'Italiana', serif;
+            font-size: clamp(60px, 12vw, 120px);
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 40px;
+            color: var(--cream);
+            letter-spacing: -2px;
+        }
+
+        .title {
+            font-size: clamp(50px, 10vw, 90px);
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .divider {
+            width: 80px;
+            height: 1px;
+            background: var(--gold);
+            margin: 50px 0;
+            opacity: 0.5;
+        }
+
+        .story {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            color: var(--cream);
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .story p {
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .story p:nth-child(1) { animation-delay: 0.8s; }
+        .story p:nth-child(2) { animation-delay: 1.2s; }
+        .story p:nth-child(3) { animation-delay: 1.6s; }
+        .story p:nth-child(4) { animation-delay: 2s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .emphasis {
+            font-style: italic;
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        .emphasis.sage {
+            color: var(--sage);
+        }
+
+        .emphasis.terracotta {
+            color: var(--terracotta);
+        }
+
+        .emphasis.crimson {
+            color: var(--crimson);
+        }
+
+        .distance {
+            display: inline-block;
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 20px;
+            margin: 20px 0;
+            font-weight: 300;
+        }
+
+        .quote {
+            border-left: 2px solid var(--gold);
+            padding-left: 30px;
+            margin: 50px 0;
+            font-size: clamp(20px, 3vw, 28px);
+            font-style: italic;
+            color: var(--gold);
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards;
+        }
+
+        .craft-note {
+            margin: 60px 0;
+            padding: 40px;
+            border: 1px solid rgba(248, 246, 241, 0.1);
+            background: rgba(248, 246, 241, 0.02);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.5s forwards;
+        }
+
+        .craft-note .label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .craft-note .text {
+            font-size: 20px;
+            line-height: 1.7;
+            font-style: italic;
+            color: var(--cream);
+        }
+
+        /* Video section */
+        .video-section {
+            margin: 60px 0;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.8s forwards;
+        }
+
+        .video-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid rgba(248, 246, 241, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+            filter: contrast(1.1) brightness(0.95);
+        }
+
+        .video-caption {
+            margin-top: 20px;
+            font-size: 16px;
+            font-style: italic;
+            color: rgba(248, 246, 241, 0.7);
+            line-height: 1.6;
+        }
+
+        .closing-text {
+            margin-top: 60px;
+            font-size: clamp(20px, 3vw, 26px);
+            line-height: 1.7;
+            color: var(--cream);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.5s forwards;
+        }
+
+        /* The Question */
+        .the-question {
+            margin: 80px 0 60px;
+            font-family: 'Italiana', serif;
+            font-size: clamp(32px, 6vw, 56px);
+            color: var(--gold);
+            text-align: center;
+            line-height: 1.3;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.2s forwards;
+        }
+
+        /* Buttons area */
+        .buttons-area {
+            margin: 60px 0;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.8s forwards;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .btn {
+            font-family: 'Crimson Pro', serif;
+            font-size: 18px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: transparent;
+            border: 1px solid var(--cream);
+            padding: 20px 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-yes {
+            color: var(--cream);
+            border-color: var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .btn-yes::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-yes:hover::before {
+            left: 0;
+        }
+
+        .btn-yes:hover {
+            color: var(--charcoal);
+        }
+
+        .btn-no {
+            color: rgba(248, 246, 241, 0.5);
+            border-color: rgba(248, 246, 241, 0.3);
+            position: absolute;
+            font-size: 14px;
+            padding: 15px 35px;
+        }
+
+        .btn-no:hover {
+            border-color: rgba(248, 246, 241, 0.5);
+        }
+
+        .sarcastic-message {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 15px;
+            font-style: italic;
+            color: var(--burgundy);
+            min-height: 25px;
+            letter-spacing: 1px;
+        }
+
+        /* Response section */
+        .response {
+            display: none;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .response.show {
+            display: block;
+            animation: responseReveal 1.5s ease-out forwards;
+        }
+
+        @keyframes responseReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .response-title {
+            font-family: 'Italiana', serif;
+            font-size: clamp(40px, 8vw, 80px);
+            color: var(--gold);
+            margin-bottom: 50px;
+            line-height: 1.2;
+        }
+
+        .response-text {
+            font-size: clamp(20px, 3vw, 28px);
+            line-height: 1.8;
+            color: var(--cream);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .response-text p {
+            margin-bottom: 25px;
+        }
+
+        .surprise-section {
+            margin-top: 80px;
+            padding: 60px 40px;
+            border: 1px solid rgba(201, 169, 97, 0.3);
+            background: rgba(201, 169, 97, 0.05);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
+        }
+
+        .surprise-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
+
+        .surprise-text {
+            font-family: 'Italiana', serif;
+            font-size: clamp(28px, 5vw, 48px);
+            line-height: 1.4;
+            color: var(--cream);
+            margin-bottom: 30px;
+        }
+
+        .surprise-message {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            color: var(--cream);
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        .navigation {
+            margin-top: 80px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards;
+        }
+
+        .continue-btn {
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--cream);
+            background: transparent;
+            border: 1px solid var(--cream);
+            padding: 18px 50px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .continue-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cream);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .continue-btn:hover::before {
+            left: 0;
+        }
+
+        .continue-btn:hover {
+            color: var(--charcoal);
+        }
+
+        .progress {
+            display: flex;
+            gap: 8px;
+        }
+
+        .progress-dot {
+            width: 40px;
+            height: 2px;
+            background: rgba(248, 246, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: var(--gold);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(248, 246, 241, 0.5);
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            opacity: 0;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                top: -10%;
+                opacity: 1;
+                transform: rotate(0deg);
+            }
+            100% {
+                top: 110%;
+                opacity: 0;
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 30px;
+            }
+
+            .location, .title {
+                font-size: 50px;
+            }
+
+            .story {
+                font-size: 18px;
+            }
+
+            .music-control {
+                top: 20px;
+                right: 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .btn-no {
+                position: static !important;
+                margin-top: 20px;
+            }
+
+            .craft-note {
+                padding: 30px 20px;
+            }
+
+            .surprise-section {
+                padding: 40px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background page1" id="background"></div>
+    <div class="journey-line" id="journeyLine"></div>
+    <div class="pulse-overlay" id="pulseOverlay"></div>
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="music-control" onclick="toggleMusic()">
+        <span id="musicText">Sound On</span>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="bg.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- PAGE 1: MUMBAI -->
+    <div class="page active" id="page1">
+        <div class="container">
+            <div class="content">
+                <div class="chapter">Chapter I • The Beginning</div>
+                
+                <h1 class="location">Mumbai</h1>
+
+                <div class="divider"></div>
+
+                <div class="story">
+                    <p>There are moments in life when the heart makes a decision the mind cannot comprehend. Standing at the edge of <span class="emphasis">India's western coast</span>, I knew what I had to do.</p>
+
+                    <div class="distance">1,300 KILOMETERS</div>
+
+                    <p>The distance between us wasn't just measured in miles. It was measured in <span class="emphasis">courage</span>, in <span class="emphasis">hope</span>, in the unwavering belief that some people are worth crossing continents for.</p>
+
+                    <p>So I began. Not with grand gestures or elaborate plans. Just a simple truth: <span class="emphasis">I had to find you.</span></p>
+                </div>
+
+                <div class="navigation">
+                    <button class="continue-btn" onclick="goToPage(2)">Continue</button>
+                    <div class="progress">
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+
+                <div class="subtitle">Mumbai → Chennai • A Love Story</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: THE JOURNEY -->
+    <div class="page" id="page2">
+        <div class="container">
+            <div class="content">
+                <div class="chapter">Chapter II • The Passage</div>
+                
+                <h1 class="title">Through India</h1>
+
+                <div class="divider"></div>
+
+                <div class="story">
+                    <p>The journey became a meditation. Each passing mile brought me closer to you, yet the distance felt infinite. Through <span class="emphasis sage">cities that never sleep</span> and <span class="emphasis sage">villages frozen in time</span>, I carried one thought.</p>
+
+                    <p>I thought about your passion for <span class="emphasis sage">exploring the world</span>—how your eyes light up when speaking of distant places, untold stories, cultures yet to be discovered. This journey was mine, but I imagined it as ours.</p>
+
+                    <p>Every sunset I witnessed alone, I saved for us to see together. Every story I heard, I stored away to share with you. Because travel isn't about the miles covered—it's about <span class="emphasis sage">who you wish was beside you</span>.</p>
+                </div>
+
+                <div class="quote">
+                    "Home isn't where you start. It's where your heart finally stops searching."
+                </div>
+
+                <div class="navigation">
+                    <button class="continue-btn" onclick="goToPage(3)">Continue</button>
+                    <div class="progress">
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: CHENNAI -->
+    <div class="page" id="page3">
+        <div class="container">
+            <div class="content">
+                <div class="chapter">Chapter III • The Discovery</div>
+                
+                <h1 class="location">Chennai</h1>
+
+                <div class="divider"></div>
+
+                <div class="story">
+                    <p>I arrived at dawn, when the city was still waking. The scent of filter coffee and fresh bread guided me through unfamiliar streets until I found what I was looking for.</p>
+
+                    <p>A small space where <span class="emphasis terracotta">flour becomes art</span>. Where you stand, lost in concentration, transforming simple ingredients into moments of joy. Watching you work was like witnessing <span class="emphasis terracotta">devotion in motion</span>.</p>
+
+                    <p>Your passion for baking isn't just about recipes or technique. It's about <span class="emphasis terracotta">creating something from nothing</span>, about the patience to wait for dough to rise, the intuition to know when something is ready.</p>
+
+                    <p>In that moment, I understood: you don't just bake. You <span class="emphasis terracotta">craft experiences</span>. You create memories that linger long after the last bite.</p>
+                </div>
+
+                <div class="craft-note">
+                    <div class="label">A Thought</div>
+                    <div class="text">
+                        The way you measure ingredients with such care reminded me that love, too, requires precision. Not in controlling every detail, but in knowing exactly what matters.
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="continue-btn" onclick="goToPage(4)">Continue</button>
+                    <div class="progress">
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: THE HEARTBEAT -->
+    <div class="page" id="page4">
+        <div class="container">
+            <div class="content">
+                <div class="chapter">Chapter IV • The Rhythm</div>
+                
+                <h1 class="title">Every Heartbeat</h1>
+
+                <div class="divider"></div>
+
+                <div class="story">
+                    <p>After <span class="emphasis crimson">1,300 kilometers</span>, standing here in Chennai, I've come to understand something fundamental about the human heart.</p>
+
+                    <p>It doesn't beat for destinations. It beats for <span class="emphasis crimson">people</span>. For moments. For the promise of something that makes every mile worthwhile.</p>
+                </div>
+
+                <div class="video-section">
+                    <div class="video-label">Listen</div>
+                    <div class="video-container">
+                        <video controls loop autoplay muted>
+                            <source src="yourvideo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-caption">
+                            This is the rhythm that carried me across India. Every beat whispers your name.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="closing-text">
+                    My heart has been beating for you long before I made this journey. It will continue beating for you long after. The question now is whether yours might join mine in the same rhythm.
+                </div>
+
+                <div class="navigation">
+                    <button class="continue-btn" onclick="goToPage(5)">Continue</button>
+                    <div class="progress">
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: THE QUESTION -->
+    <div class="page" id="page5">
+        <div class="container">
+            <div class="content" id="mainContent">
+                <div class="chapter">Chapter V • The Question</div>
+                
+                <h1 class="title">Will You Be My Soulmate?</h1>
+
+                <div class="divider"></div>
+
+                <div class="story">
+                    <p>I've traveled <span class="emphasis">1,300 kilometers</span> to stand here before you. Not because distance proves love, but because some people are worth every mile.</p>
+
+                    <p>I've watched you transform flour and sugar into art. I've seen how you approach the world with the same care you give to perfecting a recipe—with <span class="emphasis">patience, passion, and purpose</span>.</p>
+
+                    <p>So here I am, with the simplest and most profound question I've ever asked:</p>
+                </div>
+
+                <div class="the-question">
+                    Will you be my soulmate?
+                </div>
+
+                <div class="buttons-area">
+                    <div class="buttons-container">
+                        <button class="btn btn-yes" onclick="handleYes()">Yes</button>
+                        <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">
+                            <span id="noText">Not Sure</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sarcastic-message" id="sarcasticMsg"></div>
+
+                <div class="progress">
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot active"></div>
+                </div>
+            </div>
+
+            <div class="content response" id="responseContent">
+                <div class="response-title">You Said Yes</div>
+                
+                <div class="response-text">
+                    <p>Every sunrise we'll watch together. Every sunset we'll share.</p>
+                    <p>From Mumbai to Chennai and every place in between—our journey has only just begun.</p>
+                    <p>We'll travel the world, bake memories, and build a life measured not in miles but in moments.</p>
+                </div>
+
+                <div class="surprise-section">
+                    <div class="surprise-label">But the biggest surprise?</div>
+                    <div class="surprise-text">
+                        Every sunrise, every sunset, every moment...
+                    </div>
+                    <div class="surprise-message">
+                        I'll spend them all loving you.
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot active"></div>
+                    <div class="progress-dot active"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let musicPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicText = document.getElementById('musicText');
+        const background = document.getElementById('background');
+        const journeyLine = document.getElementById('journeyLine');
+        const pulseOverlay = document.getElementById('pulseOverlay');
+        const starsContainer = document.getElementById('starsContainer');
+
+        // Generate stars for page 5
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Music control
+        function toggleMusic() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicText.textContent = 'Sound Off';
+            } else {
+                bgMusic.play().catch(() => {});
+                musicText.textContent = 'Sound On';
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        // Auto-play music on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    musicText.textContent = 'Sound On';
+                }).catch(() => {});
+            }, 1000);
+        });
+
+        // Page navigation
+        function goToPage(pageNum) {
+            // Hide current page
+            document.getElementById('page' + currentPage).classList.remove('active');
+            
+            // Update current page
+            currentPage = pageNum;
+            
+            // Show new page
+            document.getElementById('page' + pageNum).classList.add('active');
+            
+            // Update background
+            background.className = 'background page' + pageNum;
+            
+            // Update special effects based on page
+            journeyLine.classList.remove('active');
+            pulseOverlay.classList.remove('active');
+            starsContainer.classList.remove('active');
+            
+            if (pageNum === 2) {
+                journeyLine.classList.add('active');
+            } else if (pageNum === 4) {
+                pulseOverlay.classList.add('active');
+            } else if (pageNum === 5) {
+                starsContainer.classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Page 5: Proposal logic
+        const sarcasticMessages = [
+            "After 1,300 kilometers? Really?",
+            "Think about all those cupcakes we could bake together",
+            "The button is as elusive as the perfect soufflé",
+            "I crossed five states for this moment",
+            "Even your pastry doesn't run away this fast",
+            "Mumbai to Chennai wasn't far enough?",
+            "This button has better reflexes than I do",
+            "Your croissants are more cooperative than this button",
+            "I've traveled further than this button will",
+            "At this point, the button deserves a medal",
+            "Even your dough rises faster than my chances",
+            "The button knows something I don't",
+            "This is harder than getting bread to rise perfectly",
+            "I should have just asked via a cake message",
+            "Fine. I'll ask again. And again. Forever if I have to."
+        ];
+
+        let messageIndex = 0;
+        let attempts = 0;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.querySelector('.btn-yes');
+        const sarcasticMsg = document.getElementById('sarcasticMsg');
+        const buttonsArea = document.querySelector('.buttons-area');
+
+        function moveButton() {
+            if (attempts >= 10) {
+                handleYes();
+                return;
+            }
+
+            attempts++;
+
+            // Show message
+            sarcasticMsg.textContent = sarcasticMessages[messageIndex];
+            messageIndex = (messageIndex + 1) % sarcasticMessages.length;
+
+            // Get boundaries
+            const area = buttonsArea.getBoundingClientRect();
+            const btn = noBtn.getBoundingClientRect();
+
+            const maxX = area.width - btn.width - 60;
+            const maxY = area.height - btn.height - 60;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            // Move button
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+
+            // Grow yes button
+            const scale = 1 + (attempts * 0.08);
+            yesBtn.style.transform = `scale(${scale})`;
+
+            // Shrink no button
+            const noScale = Math.max(0.6, 1 - (attempts * 0.06));
+            noBtn.style.transform = `scale(${noScale})`;
+
+            // Change text
+            if (attempts === 3) {
+                document.getElementById('noText').textContent = 'Maybe...';
+            } else if (attempts === 6) {
+                document.getElementById('noText').textContent = 'Really?';
+            } else if (attempts >= 9) {
+                document.getElementById('noText').textContent = 'Fine...';
+            }
+        }
+
+        function handleYes() {
+            const mainContent = document.getElementById('mainContent');
+            const responseContent = document.getElementById('responseContent');
+
+            // Hide main content
+            mainContent.style.display = 'none';
+
+            // Show response
+            responseContent.classList.add('show');
+
+            // Create elegant confetti
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#c9a961', '#f8f6f1', '#6b2737'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animation = `confettiFall ${3 + Math.random() * 2}s linear forwards`;
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>
