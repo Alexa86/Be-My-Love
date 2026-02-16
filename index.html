@@ -29,7 +29,7 @@ video{
     height:100%;
     object-fit:cover;
     z-index:-1;
-    filter:brightness(40%);
+    filter:brightness(35%);
 }
 
 /* Main Container */
@@ -46,12 +46,15 @@ video{
 h1{
     font-size:42px;
     margin-bottom:40px;
-    animation: glow 2s infinite alternate;
+    background:linear-gradient(45deg,gold,white,gold);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:glow 2s infinite alternate;
 }
 
 @keyframes glow{
-    from{ text-shadow:0 0 10px white; }
-    to{ text-shadow:0 0 25px cyan; }
+    from{ text-shadow:0 0 10px gold; }
+    to{ text-shadow:0 0 30px gold; }
 }
 
 /* Buttons */
@@ -59,44 +62,43 @@ h1{
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:30px;
+    gap:40px;
     margin-top:20px;
     position:relative;
 }
 
 button{
-    padding:15px 40px;
+    padding:15px 45px;
     font-size:20px;
     border:none;
-    border-radius:30px;
+    border-radius:40px;
     cursor:pointer;
-    transition:0.3s;
+    transition:0.3s ease;
+    min-width:140px;
 }
 
 #yes{
-    background:#00ff99;
+    background:gold;
     color:black;
+    font-weight:bold;
 }
 
 #yes:hover{
     transform:scale(1.1);
-    box-shadow:0 0 20px #00ff99;
+    box-shadow:0 0 25px gold;
 }
 
 #no{
-    background:#ff4d4d;
+    background:#444;
     color:white;
-    position:absolute;
 }
 
-/* Hidden After Yes */
-.hidden{
-    display:none;
-}
+/* Celebration */
+.hidden{ display:none; }
 
-/* Celebration Screen */
 .celebrate{
-    font-size:35px;
+    font-size:36px;
+    margin-bottom:20px;
     animation:pop 1s ease forwards;
 }
 
@@ -105,24 +107,21 @@ button{
     100%{transform:scale(1);}
 }
 
-/* Typewriter */
 .typewriter{
     font-size:22px;
     margin-top:20px;
     height:60px;
 }
 
-/* Mini Game */
-.game{
-    margin-top:20px;
-    font-size:18px;
+/* Ring animation */
+.ring{
+    font-size:60px;
+    animation:ringPop 1s ease infinite alternate;
 }
 
-input{
-    padding:10px;
-    border-radius:20px;
-    border:none;
-    text-align:center;
+@keyframes ringPop{
+    from{transform:scale(1);}
+    to{transform:scale(1.2) rotate(10deg);}
 }
 
 canvas{
@@ -136,13 +135,11 @@ canvas{
 
 <body>
 
-<!-- Background Video -->
 <video autoplay muted loop>
     <source src="yourvideo.mp4" type="video/mp4">
 </video>
 
-<!-- Music -->
-<audio id="bgmusic" autoplay loop>
+<audio autoplay loop>
     <source src="bg.mp3" type="audio/mpeg">
 </audio>
 
@@ -160,6 +157,7 @@ canvas{
 </div>
 
 <div class="container hidden" id="celebration">
+    <div class="ring">💍</div>
     <div class="celebrate">
         ❤️ Established in 2026 ❤️
     </div>
@@ -170,17 +168,19 @@ canvas{
 
 <script>
 
-/* No Button Escape */
+/* NO BUTTON ESCAPE */
 const noBtn = document.getElementById("no");
 
-noBtn.addEventListener("mouseover", function(){
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+noBtn.addEventListener("mouseover", ()=>{
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    noBtn.style.position="fixed";
+    noBtn.style.left = Math.random()*maxX + "px";
+    noBtn.style.top = Math.random()*maxY + "px";
 });
 
-/* Yes Click */
+/* YES CLICK */
 document.getElementById("yes").onclick = function(){
 
     document.getElementById("main").classList.add("hidden");
@@ -189,76 +189,72 @@ document.getElementById("yes").onclick = function(){
     document.getElementById("heartbeat").play();
 
     startConfetti();
-    startFireworks();
+    fireworks();
     typeWriter();
 };
 
-/* Typewriter */
+/* TYPEWRITER */
 function typeWriter(){
-    const text = "From today, forever begins... ❤️";
+    const text = "From this moment, forever begins... ❤️";
     let i = 0;
-    const speed = 60;
-
     function typing(){
         if(i < text.length){
             document.getElementById("typeText").innerHTML += text.charAt(i);
             i++;
-            setTimeout(typing, speed);
+            setTimeout(typing, 60);
         }
     }
     typing();
 }
 
-/* Confetti */
-const canvas = document.getElementById("confetti");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+/* CONFETTI */
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-let confetti = [];
+let pieces=[];
 
 function startConfetti(){
-    for(let i=0;i<150;i++){
-        confetti.push({
+    for(let i=0;i<200;i++){
+        pieces.push({
             x:Math.random()*canvas.width,
             y:Math.random()*canvas.height,
-            r:Math.random()*6+2,
-            d:Math.random()*150
+            r:Math.random()*6+2
         });
     }
-    draw();
+    animate();
 }
 
-function draw(){
+function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="white";
-    for(let i=0;i<confetti.length;i++){
-        let c=confetti[i];
+    ctx.fillStyle="gold";
+    pieces.forEach(p=>{
         ctx.beginPath();
-        ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
         ctx.fill();
-        c.y += 2;
-        if(c.y>canvas.height) c.y=0;
-    }
-    requestAnimationFrame(draw);
+        p.y+=2;
+        if(p.y>canvas.height) p.y=0;
+    });
+    requestAnimationFrame(animate);
 }
 
-/* Fireworks */
-function startFireworks(){
-    for(let i=0;i<20;i++){
+/* FIREWORKS */
+function fireworks(){
+    for(let i=0;i<25;i++){
         setTimeout(()=>{
-            let div=document.createElement("div");
-            div.style.position="fixed";
-            div.style.width="10px";
-            div.style.height="10px";
-            div.style.background="cyan";
-            div.style.borderRadius="50%";
-            div.style.left=Math.random()*window.innerWidth+"px";
-            div.style.top=Math.random()*window.innerHeight+"px";
-            div.style.boxShadow="0 0 30px cyan";
-            document.body.appendChild(div);
-            setTimeout(()=>div.remove(),1000);
-        }, i*200);
+            let d=document.createElement("div");
+            d.style.position="fixed";
+            d.style.width="8px";
+            d.style.height="8px";
+            d.style.background="gold";
+            d.style.borderRadius="50%";
+            d.style.left=Math.random()*window.innerWidth+"px";
+            d.style.top=Math.random()*window.innerHeight+"px";
+            d.style.boxShadow="0 0 40px gold";
+            document.body.appendChild(d);
+            setTimeout(()=>d.remove(),1000);
+        },i*150);
     }
 }
 
