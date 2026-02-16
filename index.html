@@ -1,6 +1,9 @@
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+
 // Typing effect
 function typeText(element, text, speed=50, callback) {
+  if (!element) return;
   let i = 0;
   element.innerHTML = "";
   function type() {
@@ -15,20 +18,20 @@ function typeText(element, text, speed=50, callback) {
   type();
 }
 
-// Slide elements
 const slides = document.querySelectorAll(".slide");
 let currentSlide = 0;
 
-// Auto type first slide & then move to next
-typeText(document.getElementById("typeText1"), "Started my journey in Mumbai…", 60, () => {
-  setTimeout(() => nextSlide(), 1500);
-});
+// Safe start
+const firstText = document.getElementById("typeText1");
+if (firstText) {
+  typeText(firstText, "Started my journey in Mumbai…", 60, () => {
+    setTimeout(() => nextSlide(), 1500);
+  });
+}
 
-// Also type second slide text ahead of time (but hidden)
-typeText(document.getElementById("typeText2"), "Traveling around the world…", 60);
-
-// Slide changer
 function nextSlide() {
+  if (!slides.length) return;
+
   slides[currentSlide].classList.remove("active");
   currentSlide++;
   if (currentSlide >= slides.length) {
@@ -36,20 +39,21 @@ function nextSlide() {
   }
   slides[currentSlide].classList.add("active");
 
-  // If arriving at slide 2, show travel text
   if (currentSlide === 1) {
-    document.getElementById("subtitle2").innerHTML = "Exploring places ✈️ and dreaming of meeting her 🍰";
+    const subtitle2 = document.getElementById("subtitle2");
+    if (subtitle2) {
+      subtitle2.innerHTML =
+        "Exploring places ✈️ and dreaming of meeting her 🍰";
+    }
   }
 }
 
-// Accept / Decline buttons logic
-document.addEventListener("click", () => {
-  if (currentSlide === 1) {
-    nextSlide();
-  }
+// Click to advance
+document.addEventListener("click", function() {
+  if (currentSlide === 1) nextSlide();
 });
 
-// Decline button flying
+// Decline button movement
 const declineBtn = document.getElementById("declineBtn");
 const excuses = [
   "I forgot my heart in Paris ✨",
@@ -59,40 +63,30 @@ const excuses = [
   "I need more coffee ☕",
   "I’m late for my wings 🪽"
 ];
+
 if (declineBtn) {
-  declineBtn.addEventListener("mouseenter", () => {
+  declineBtn.addEventListener("mouseenter", function() {
     const x = Math.random() * (window.innerWidth - 150);
     const y = Math.random() * (window.innerHeight - 150);
-    declineBtn.style.transform = `translate(${x}px,${y}px) rotate(${Math.random() * 30 - 15}deg)`;
-    document.querySelector(".slide:nth-child(4) .subtitle").innerHTML =
-      excuses[Math.floor(Math.random() * excuses.length)];
+    declineBtn.style.position = "absolute";
+    declineBtn.style.left = x + "px";
+    declineBtn.style.top = y + "px";
+
+    const subtitle = document.querySelector(".subtitle");
+    if (subtitle) {
+      subtitle.innerHTML =
+        excuses[Math.floor(Math.random() * excuses.length)];
+    }
   });
 }
 
-// Instant accept button
+// Accept button
 const acceptBtn = document.getElementById("acceptBtn");
 if (acceptBtn) {
-  acceptBtn.addEventListener("click", () => {
+  acceptBtn.addEventListener("click", function() {
     nextSlide();
   });
 }
 
-// Animate airplane along path
-const plane = document.getElementById("plane");
-const pathEl = document.querySelector(".path");
-if (plane && pathEl) {
-  const length = pathEl.getTotalLength();
-  let progress = 0;
-  function animatePlane() {
-    if (currentSlide < 3) {
-      progress += 0.002;
-      if (progress > 1) progress = 1;
-      const point = pathEl.getPointAtLength(length * progress);
-      plane.style.left = point.x + "px";
-      plane.style.top = point.y + "px";
-    }
-    requestAnimationFrame(animatePlane);
-  }
-  animatePlane();
-}
+});
 </script>
