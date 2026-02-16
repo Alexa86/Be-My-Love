@@ -1,11 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Love ❤️</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .active {
+      display: flex;
+    }
+
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    #acceptBtn {
+      background: white;
+      color: #ff4d6d;
+    }
+
+    #declineBtn {
+      background: black;
+      color: white;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide active" id="slide1">
+  <h1 id="typeText1"></h1>
+</div>
+
+<div class="slide" id="slide2">
+  <h1>Will you travel the world with me? ✈️</h1>
+  <button id="acceptBtn">Accept 💖</button>
+  <button id="declineBtn">Decline 😢</button>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-// Typing effect
-function typeText(element, text, speed=50, callback) {
-  if (!element) return;
+function typeText(element, text, speed=60, callback) {
   let i = 0;
-  element.innerHTML = "";
   function type() {
     if (i < text.length) {
       element.innerHTML += text[i];
@@ -21,72 +80,35 @@ function typeText(element, text, speed=50, callback) {
 const slides = document.querySelectorAll(".slide");
 let currentSlide = 0;
 
-// Safe start
-const firstText = document.getElementById("typeText1");
-if (firstText) {
-  typeText(firstText, "Started my journey in Mumbai…", 60, () => {
-    setTimeout(() => nextSlide(), 1500);
-  });
-}
-
 function nextSlide() {
-  if (!slides.length) return;
-
   slides[currentSlide].classList.remove("active");
   currentSlide++;
-  if (currentSlide >= slides.length) {
-    currentSlide = slides.length - 1;
-  }
+  if (currentSlide >= slides.length) currentSlide = slides.length - 1;
   slides[currentSlide].classList.add("active");
-
-  if (currentSlide === 1) {
-    const subtitle2 = document.getElementById("subtitle2");
-    if (subtitle2) {
-      subtitle2.innerHTML =
-        "Exploring places ✈️ and dreaming of meeting her 🍰";
-    }
-  }
 }
 
-// Click to advance
-document.addEventListener("click", function() {
-  if (currentSlide === 1) nextSlide();
+typeText(document.getElementById("typeText1"),
+  "Started my journey in Mumbai…",
+  60,
+  function() {
+    setTimeout(nextSlide, 1500);
+  }
+);
+
+const declineBtn = document.getElementById("declineBtn");
+declineBtn.addEventListener("mouseenter", function() {
+  const x = Math.random() * (window.innerWidth - 150);
+  const y = Math.random() * (window.innerHeight - 150);
+  declineBtn.style.position = "absolute";
+  declineBtn.style.left = x + "px";
+  declineBtn.style.top = y + "px";
 });
 
-// Decline button movement
-const declineBtn = document.getElementById("declineBtn");
-const excuses = [
-  "I forgot my heart in Paris ✨",
-  "The stars aren’t aligned 🌙",
-  "Too many meetings ☕",
-  "My cat disagrees 😼",
-  "I need more coffee ☕",
-  "I’m late for my wings 🪽"
-];
-
-if (declineBtn) {
-  declineBtn.addEventListener("mouseenter", function() {
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 150);
-    declineBtn.style.position = "absolute";
-    declineBtn.style.left = x + "px";
-    declineBtn.style.top = y + "px";
-
-    const subtitle = document.querySelector(".subtitle");
-    if (subtitle) {
-      subtitle.innerHTML =
-        excuses[Math.floor(Math.random() * excuses.length)];
-    }
-  });
-}
-
-// Accept button
-const acceptBtn = document.getElementById("acceptBtn");
-if (acceptBtn) {
-  acceptBtn.addEventListener("click", function() {
-    nextSlide();
-  });
-}
+document.getElementById("acceptBtn")
+  .addEventListener("click", nextSlide);
 
 });
 </script>
+
+</body>
+</html>
