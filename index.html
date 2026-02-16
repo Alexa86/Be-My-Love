@@ -1,111 +1,286 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Be My Love ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Journey ✨</title>
 
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      font-family: Arial, sans-serif;
-      color: white;
-      overflow: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-    .slide {
-      display: none;
-      height: 100vh;
-      width: 100vw;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-    }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-    .active {
-      display: flex;
-    }
+body,html{
+height:100%;
+overflow:hidden;
+background:#000;
+color:#fff;
+}
 
-    button {
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-    }
+/* Background Video */
+video{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+filter:brightness(0.35) contrast(1.1);
+}
 
-    #acceptBtn {
-      background: white;
-      color: #ff4d6d;
-    }
+/* Dark cinematic overlay */
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+z-index:-1;
+}
 
-    #declineBtn {
-      background: black;
-      color: white;
-      position: relative;
-    }
-  </style>
+/* Slides */
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+opacity:0;
+transition:opacity 1.5s ease;
+}
+
+.slide.active{
+opacity:1;
+}
+
+h1{
+font-size:3rem;
+font-weight:700;
+letter-spacing:2px;
+}
+
+.subtitle{
+margin-top:20px;
+font-size:1.2rem;
+font-weight:300;
+opacity:0.85;
+max-width:750px;
+}
+
+/* Buttons */
+.buttons{
+margin-top:40px;
+}
+
+button{
+padding:15px 40px;
+font-size:1rem;
+border-radius:40px;
+border:none;
+cursor:pointer;
+margin:10px;
+transition:0.3s;
+backdrop-filter:blur(10px);
+}
+
+#acceptBtn{
+background:rgba(255,215,0,0.9);
+color:#000;
+box-shadow:0 0 20px rgba(255,215,0,0.6);
+}
+
+#acceptBtn:hover{
+transform:scale(1.1);
+}
+
+#declineBtn{
+background:rgba(255,255,255,0.15);
+color:#fff;
+border:1px solid rgba(255,255,255,0.4);
+position:relative;
+}
+
+#declineBtn:hover{
+background:rgba(255,255,255,0.3);
+}
+
+/* Floating particles */
+.particle{
+position:absolute;
+width:4px;
+height:4px;
+background:rgba(255,255,255,0.6);
+border-radius:50%;
+animation:float 12s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh) scale(0.5);}
+100%{transform:translateY(-10vh) scale(1.2);}
+}
+
+@media(max-width:768px){
+h1{font-size:2rem;}
+.subtitle{font-size:1rem;}
+}
+</style>
 </head>
+
 <body>
 
-<div class="slide active" id="slide1">
-  <h1 id="typeText1"></h1>
+<video autoplay muted loop>
+<source src="yourvideo.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<audio id="bgMusic" loop>
+<source src="bg.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Slides -->
+
+<div class="slide active">
+<h1 id="type1"></h1>
+<p class="subtitle">A journey that started with ambition…</p>
 </div>
 
-<div class="slide" id="slide2">
-  <h1>Will you travel the world with me? ✈️</h1>
-  <button id="acceptBtn">Accept 💖</button>
-  <button id="declineBtn">Decline 😢</button>
+<div class="slide">
+<h1>Across cities and countries ✈️</h1>
+<p class="subtitle">Exploring the world, chasing dreams, collecting memories.</p>
+</div>
+
+<div class="slide">
+<h1>And somewhere between flights and flavors… 🍰</h1>
+<p class="subtitle">I found someone who loves baking joy into life.</p>
+</div>
+
+<div class="slide">
+<h1>Maybe destiny had a plan.</h1>
+<p class="subtitle">To travel the world… but return to you.</p>
+</div>
+
+<div class="slide">
+<h1>Will You Be My Soulmate?</h1>
+<div class="buttons">
+<button id="acceptBtn">Yes 💍</button>
+<button id="declineBtn">No 😌</button>
+</div>
+<p class="subtitle" id="excuseText"></p>
+</div>
+
+<div class="slide">
+<h1>Then let’s write our story together ✨</h1>
+<p class="subtitle">Baking memories. Traveling forever. Just us. 🌍</p>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded",function(){
 
-function typeText(element, text, speed=60, callback) {
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      element.innerHTML += text[i];
-      i++;
-      setTimeout(type, speed);
-    } else {
-      if (callback) callback();
-    }
-  }
-  type();
+const slides=document.querySelectorAll(".slide");
+let current=0;
+
+/* Slide Control */
+function showSlide(index){
+slides[current].classList.remove("active");
+current=index;
+slides[current].classList.add("active");
 }
 
-const slides = document.querySelectorAll(".slide");
-let currentSlide = 0;
-
-function nextSlide() {
-  slides[currentSlide].classList.remove("active");
-  currentSlide++;
-  if (currentSlide >= slides.length) currentSlide = slides.length - 1;
-  slides[currentSlide].classList.add("active");
+function nextSlide(){
+if(current < slides.length-2){
+slides[current].classList.remove("active");
+current++;
+slides[current].classList.add("active");
+}
 }
 
-typeText(document.getElementById("typeText1"),
-  "Started my journey in Mumbai…",
-  60,
-  function() {
-    setTimeout(nextSlide, 1500);
-  }
+/* Typing effect */
+function typeEffect(element,text,speed=60,callback){
+let i=0;
+function type(){
+if(i<text.length){
+element.innerHTML+=text[i];
+i++;
+setTimeout(type,speed);
+}else if(callback){callback();}
+}
+type();
+}
+
+typeEffect(
+document.getElementById("type1"),
+"Started my journey in Mumbai…",
+70,
+()=>setTimeout(nextSlide,2000)
 );
 
-const declineBtn = document.getElementById("declineBtn");
-declineBtn.addEventListener("mouseenter", function() {
-  const x = Math.random() * (window.innerWidth - 150);
-  const y = Math.random() * (window.innerHeight - 150);
-  declineBtn.style.position = "absolute";
-  declineBtn.style.left = x + "px";
-  declineBtn.style.top = y + "px";
+/* Auto progression until proposal */
+let autoFlow=setInterval(()=>{
+if(current < slides.length-2){
+nextSlide();
+}
+},6000);
+
+/* Accept button ALWAYS works */
+document.getElementById("acceptBtn").addEventListener("click",()=>{
+clearInterval(autoFlow);
+showSlide(slides.length-1);
 });
 
-document.getElementById("acceptBtn")
-  .addEventListener("click", nextSlide);
+/* Decline escapes */
+const decline=document.getElementById("declineBtn");
+const excuses=[
+"You don’t mean that 😌",
+"Think again…",
+"Are you sure?",
+"I’ll bake you cake instead 🍰",
+"What about Paris? ✈️"
+];
+
+decline.addEventListener("mouseover",()=>{
+const x=Math.random()*(window.innerWidth-150);
+const y=Math.random()*(window.innerHeight-100);
+decline.style.position="absolute";
+decline.style.left=x+"px";
+decline.style.top=y+"px";
+
+document.getElementById("excuseText").innerText=
+excuses[Math.floor(Math.random()*excuses.length)];
+});
+
+/* Background music fade-in */
+const music=document.getElementById("bgMusic");
+document.body.addEventListener("click",()=>{
+music.volume=0;
+music.play();
+let fade=setInterval(()=>{
+if(music.volume<0.5){
+music.volume+=0.02;
+}else clearInterval(fade);
+},200);
+},{once:true});
+
+/* Subtle floating particles */
+function createParticle(){
+const p=document.createElement("div");
+p.className="particle";
+p.style.left=Math.random()*100+"vw";
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),12000);
+}
+setInterval(createParticle,500);
 
 });
 </script>
