@@ -34,7 +34,7 @@ z-index:-2;
 filter:brightness(0.35) contrast(1.1);
 }
 
-/* Dark cinematic overlay */
+/* Overlay */
 .overlay{
 position:fixed;
 top:0;
@@ -76,11 +76,13 @@ font-size:1.2rem;
 font-weight:300;
 opacity:0.85;
 max-width:750px;
+min-height:30px;
 }
 
 /* Buttons */
 .buttons{
 margin-top:40px;
+position:relative;
 }
 
 button{
@@ -90,8 +92,7 @@ border-radius:40px;
 border:none;
 cursor:pointer;
 margin:10px;
-transition:0.3s;
-backdrop-filter:blur(10px);
+transition:0.3s ease;
 }
 
 #acceptBtn{
@@ -108,26 +109,23 @@ transform:scale(1.1);
 background:rgba(255,255,255,0.15);
 color:#fff;
 border:1px solid rgba(255,255,255,0.4);
-position:relative;
-}
-
-#declineBtn:hover{
-background:rgba(255,255,255,0.3);
-}
-
-/* Floating particles */
-.particle{
 position:absolute;
-width:4px;
-height:4px;
-background:rgba(255,255,255,0.6);
-border-radius:50%;
-animation:float 12s linear infinite;
 }
 
-@keyframes float{
-0%{transform:translateY(100vh) scale(0.5);}
-100%{transform:translateY(-10vh) scale(1.2);}
+/* Established animation */
+.established{
+margin-top:30px;
+font-size:1.5rem;
+letter-spacing:4px;
+color:gold;
+opacity:0;
+transform:translateY(20px);
+transition:all 2s ease;
+}
+
+.established.show{
+opacity:1;
+transform:translateY(0);
 }
 
 @media(max-width:768px){
@@ -158,31 +156,29 @@ h1{font-size:2rem;}
 
 <div class="slide">
 <h1>Across cities and countries ✈️</h1>
-<p class="subtitle">Exploring the world, chasing dreams, collecting memories.</p>
+<p class="subtitle">Exploring the world, chasing dreams.</p>
 </div>
 
 <div class="slide">
-<h1>And somewhere between flights and flavors… 🍰</h1>
-<p class="subtitle">I found someone who loves baking joy into life.</p>
-</div>
-
-<div class="slide">
-<h1>Maybe destiny had a plan.</h1>
-<p class="subtitle">To travel the world… but return to you.</p>
+<h1>Between flights and flavors… 🍰</h1>
+<p class="subtitle">I found someone who makes life sweeter.</p>
 </div>
 
 <div class="slide">
 <h1>Will You Be My Soulmate?</h1>
 <div class="buttons">
 <button id="acceptBtn">Yes 💍</button>
-<button id="declineBtn">No 😌</button>
+<button id="declineBtn">No</button>
 </div>
 <p class="subtitle" id="excuseText"></p>
 </div>
 
 <div class="slide">
 <h1>Then let’s write our story together ✨</h1>
-<p class="subtitle">Baking memories. Traveling forever. Just us. 🌍</p>
+<p class="subtitle">Baking memories. Traveling forever. 🌍</p>
+<div class="established" id="establishedText">
+ESTABLISHED IN 2026
+</div>
 </div>
 
 <script>
@@ -191,7 +187,7 @@ document.addEventListener("DOMContentLoaded",function(){
 const slides=document.querySelectorAll(".slide");
 let current=0;
 
-/* Slide Control */
+/* Slide Controls */
 function showSlide(index){
 slides[current].classList.remove("active");
 current=index;
@@ -233,31 +229,58 @@ nextSlide();
 }
 },6000);
 
-/* Accept button ALWAYS works */
+/* Accept Button */
 document.getElementById("acceptBtn").addEventListener("click",()=>{
 clearInterval(autoFlow);
 showSlide(slides.length-1);
+
+setTimeout(()=>{
+document.getElementById("establishedText").classList.add("show");
+},2000);
 });
 
-/* Decline escapes */
+/* Premium Decline Button */
 const decline=document.getElementById("declineBtn");
-const excuses=[
-"You don’t mean that 😌",
-"Think again…",
-"Are you sure?",
-"I’ll bake you cake instead 🍰",
-"What about Paris? ✈️"
+const excuseText=document.getElementById("excuseText");
+
+const sarcasticReasons=[
+"Are you sure? That sounded illegal 😌",
+"You misclicked. I’ll ignore that.",
+"Nice try… destiny disagrees.",
+"Error 404: No not found.",
+"Paris already approved us ✈️",
+"Baking together sounds better 🍰",
+"The universe said YES already.",
+"System override activated.",
+"Recalculating feelings…",
+"This button refuses negativity."
 ];
 
-decline.addEventListener("mouseover",()=>{
-const x=Math.random()*(window.innerWidth-150);
-const y=Math.random()*(window.innerHeight-100);
-decline.style.position="absolute";
-decline.style.left=x+"px";
-decline.style.top=y+"px";
+function moveDecline(){
+decline.style.transition="opacity 0.4s ease, transform 0.4s ease";
+decline.style.opacity="0";
+decline.style.transform="scale(0.8)";
 
-document.getElementById("excuseText").innerText=
-excuses[Math.floor(Math.random()*excuses.length)];
+setTimeout(()=>{
+const maxX=window.innerWidth-160;
+const maxY=window.innerHeight-80;
+
+decline.style.position="absolute";
+decline.style.left=Math.random()*maxX+"px";
+decline.style.top=Math.random()*maxY+"px";
+
+excuseText.innerText=
+sarcasticReasons[Math.floor(Math.random()*sarcasticReasons.length)];
+
+decline.style.opacity="1";
+decline.style.transform="scale(1)";
+},400);
+}
+
+decline.addEventListener("mouseenter",moveDecline);
+decline.addEventListener("click",(e)=>{
+e.preventDefault();
+moveDecline();
 });
 
 /* Background music fade-in */
@@ -271,16 +294,6 @@ music.volume+=0.02;
 }else clearInterval(fade);
 },200);
 },{once:true});
-
-/* Subtle floating particles */
-function createParticle(){
-const p=document.createElement("div");
-p.className="particle";
-p.style.left=Math.random()*100+"vw";
-document.body.appendChild(p);
-setTimeout(()=>p.remove(),12000);
-}
-setInterval(createParticle,500);
 
 });
 </script>
